@@ -2,6 +2,11 @@ import { Suspense } from "react";
 import { useRoutes, Routes, Route } from "react-router-dom";
 import Home from "./components/home";
 import routes from "tempo-routes";
+import About from "./components/pages/About";
+import Career from "./components/pages/Career";
+import Services from "./components/pages/Services";
+import InternshipCourses from "./components/pages/InternshipCourses";
+import Contact from "./components/pages/Contact";
 
 function App() {
   return (
@@ -9,6 +14,11 @@ function App() {
       <>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/Career" element={<Career />} />
+          <Route path="/internship-courses" element={<InternshipCourses />} />
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>

@@ -199,22 +199,6 @@ const Home = () => {
         {/* Testimonials Section */}
         <section className="py-16 bg-muted/30">
           <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-              variants={fadeIn}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What Our Clients Say
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Don't just take our word for it. Here's what our clients have to
-                say about working with us.
-              </p>
-            </motion.div>
-
             <TestimonialsCarousel />
           </div>
         </section>
