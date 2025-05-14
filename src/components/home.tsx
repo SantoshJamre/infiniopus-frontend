@@ -1,12 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ChevronRight, ExternalLink, Quote } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Separator } from "./ui/separator";
 import HeroSection from "./sections/HeroSection";
-import TestimonialsCarousel from "./sections/TestimonialsCarousel";
 import ContactForm from "./ContactForm";
 import Layout from "./layout/Layout";
 
@@ -43,33 +43,51 @@ const services = [
 const clients = [
   {
     id: 1,
-    name: "TechCorp",
-    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=TechCorp",
+    name: "Microsoft",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+    industry: "Technology",
   },
   {
     id: 2,
-    name: "InnovateLabs",
-    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=InnovateLabs",
+    name: "Amazon",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+    industry: "E-commerce",
   },
   {
     id: 3,
-    name: "FutureWorks",
-    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=FutureWorks",
+    name: "IBM",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+    industry: "Technology",
   },
   {
     id: 4,
-    name: "GlobalSoft",
-    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=GlobalSoft",
+    name: "Google",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    industry: "Technology",
   },
   {
     id: 5,
-    name: "NextGen",
-    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=NextGen",
+    name: "Adobe",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Adobe_Systems_logo_and_wordmark.svg",
+    industry: "Software",
   },
   {
     id: 6,
-    name: "DigiSolutions",
-    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=DigiSolutions",
+    name: "Salesforce",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
+    industry: "CRM",
+  },
+  {
+    id: 7,
+    name: "Tesla",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png",
+    industry: "Automotive",
+  },
+  {
+    id: 8,
+    name: "Spotify",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
+    industry: "Entertainment",
   },
 ];
 
@@ -142,16 +160,18 @@ const Home = () => {
               creative design to deliver solutions that drive business growth
               and user engagement.
             </p>
-            <Button variant="outline" size="lg">
-              Learn More About Us <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link to="/mission">
+              <Button variant="outline" size="lg">
+                Learn More About Us <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </motion.div>
         </section>
 
         <Separator className="max-w-5xl mx-auto" />
 
         {/* Services Section */}
-        <section className="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        <section id="services" className="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -166,6 +186,13 @@ const Home = () => {
               We offer a comprehensive range of digital solutions to help your
               business thrive in the digital landscape.
             </p>
+            <div className="mt-6">
+              <Link to="/services">
+                <Button variant="outline" size="lg" className="group">
+                  View All Services <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
           </motion.div>
 
           <motion.div
@@ -197,9 +224,104 @@ const Home = () => {
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-20 bg-gradient-to-br from-primary/5 to-primary/10">
           <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-            <TestimonialsCarousel />
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={fadeIn}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                Real feedback from real clients who have experienced our dedication to excellence
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+              {[
+                {
+                  name: "Sarah Johnson",
+                  role: "CTO",
+                  company: "TechVision Inc.",
+                  quote:
+                    "Infiniopus transformed our digital presence with their innovative solutions. Their team was professional, responsive, and delivered beyond our expectations.",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+                  rating: 5,
+                },
+                {
+                  name: "Michael Chen",
+                  role: "Marketing Director",
+                  company: "Global Brands",
+                  quote:
+                    "Working with Infiniopus was a game-changer for our marketing strategy. Their insights and execution helped us achieve record-breaking engagement.",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=michael",
+                  rating: 5,
+                },
+                {
+                  name: "Emily Rodriguez",
+                  role: "CEO",
+                  company: "Startup Innovators",
+                  quote:
+                    "As a startup, finding the right partner was crucial. Infiniopus understood our vision and helped us build a solid foundation for growth.",
+                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
+                  rating: 5,
+                },
+              ].map((testimonial, index) => (
+                <motion.div key={index} variants={fadeIn}>
+                  <div className="bg-background rounded-xl p-8 shadow-lg h-full flex flex-col relative">
+                    <div className="absolute -top-6 left-8">
+                      <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+                        <Quote className="h-6 w-6 text-primary-foreground" />
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-1 mb-4 mt-4">
+                      {Array.from({ length: testimonial.rating }).map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                      ))}
+                    </div>
+                    
+                    <p className="italic text-muted-foreground mb-6 flex-grow">"{testimonial.quote}"</p>
+                    
+                    <div className="flex items-center mt-auto">
+                      <div className="h-12 w-12 rounded-full overflow-hidden mr-4">
+                        <img 
+                          src={testimonial.avatar} 
+                          alt={testimonial.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold">{testimonial.name}</h4>
+                        <p className="text-sm text-muted-foreground">{testimonial.role}, {testimonial.company}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+            
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={fadeIn}
+              className="mt-12 text-center"
+            >
+              <Button variant="outline" size="lg" className="group">
+                View All Testimonials <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </motion.div>
           </div>
         </section>
 

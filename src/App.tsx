@@ -7,6 +7,7 @@ import Career from "./components/pages/Career";
 import Services from "./components/pages/Services";
 import InternshipCourses from "./components/pages/InternshipCourses";
 import Contact from "./components/pages/Contact";
+import Mission from "./components/pages/Mission";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/Career" element={<Career />} />
           <Route path="/internship-courses" element={<InternshipCourses />} />
+          <Route path="/mission" element={<Mission />} />
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>
