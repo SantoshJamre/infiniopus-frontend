@@ -9,36 +9,7 @@ import { Separator } from "./ui/separator";
 import HeroSection from "./sections/HeroSection";
 import ContactForm from "./ContactForm";
 import Layout from "./layout/Layout";
-
-const services = [
-  {
-    id: 1,
-    title: "Web Development",
-    description:
-      "Custom websites and web applications built with modern technologies.",
-    icon: "🌐",
-  },
-  {
-    id: 2,
-    title: "Mobile Apps",
-    description:
-      "Native and cross-platform mobile applications for iOS and Android.",
-    icon: "📱",
-  },
-  {
-    id: 3,
-    title: "UI/UX Design",
-    description:
-      "User-centered design that enhances user experience and engagement.",
-    icon: "🎨",
-  },
-  {
-    id: 4,
-    title: "Cloud Solutions",
-    description: "Scalable cloud infrastructure and deployment solutions.",
-    icon: "☁️",
-  },
-];
+import { services } from "./../data/services";
 
 const clients = [
   {
@@ -213,9 +184,11 @@ const Home = () => {
                     <p className="text-muted-foreground">
                       {service.description}
                     </p>
-                    <Button variant="link" className="mt-4">
-                      Learn More <ArrowRight className="ml-1 h-4 w-4" />
-                    </Button>
+                    <Link to={`/services/${service.id}`}>
+                      <Button variant="link" className="mt-4 group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        Learn More <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -419,7 +392,7 @@ const Home = () => {
         </section>
 
         {/* Contact Section */}
-        <section className="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        <section id="contact" className="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial="hidden"
@@ -501,16 +474,24 @@ const Home = () => {
                 today to get started on your next project.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" variant="secondary">
-                  View Our Work
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
-                >
-                  Contact Us <ExternalLink className="ml-2 h-4 w-4" />
-                </Button>
+                <Link to="/portfolio">
+                  <Button 
+                    size="lg" 
+                    variant="secondary"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  >
+                    View Our Work
+                  </Button>
+                </Link>
+                <a href="#contact">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
+                  >
+                    Contact Us <ExternalLink className="ml-2 h-4 w-4" />
+                  </Button>
+                </a>
               </div>
             </motion.div>
           </div>

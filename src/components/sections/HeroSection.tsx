@@ -10,6 +10,7 @@ interface HeroSectionProps {
   ctaText?: string;
   ctaLink?: string;
   backgroundImage?: string;
+  scrollToSectionId?: string;
 }
 
 const HeroSection = ({
@@ -19,7 +20,17 @@ const HeroSection = ({
   ctaText = "Explore Our Services",
   ctaLink = "#services",
   backgroundImage = "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1200&q=80",
+  scrollToSectionId = "services",
 }: HeroSectionProps) => {
+  
+  // Function to handle smooth scrolling
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
   return (
     <div className="relative h-[700px] w-full overflow-hidden bg-slate-900">
       {/* Background with overlay */}
@@ -92,13 +103,16 @@ const HeroSection = ({
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            <a
-              href="#about"
-              className="flex flex-col items-center text-sm text-gray-300 hover:text-white"
+            <button
+              onClick={() => scrollToSection(scrollToSectionId)}
+              className="flex flex-col items-center text-sm text-gray-300 hover:text-white transition-colors cursor-pointer"
+              aria-label="Scroll Down"
             >
               <span className="mb-2">Scroll Down</span>
-              <ChevronDown className="h-5 w-5" />
-            </a>
+              <div className="bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors">
+                <ChevronDown className="h-5 w-5" />
+              </div>
+            </button>
           </motion.div>
         </motion.div>
       </div>

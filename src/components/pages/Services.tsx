@@ -1,10 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import Layout from "../layout/Layout";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
+import { services } from "../../data/services";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -20,102 +22,6 @@ const staggerContainer = {
     },
   },
 };
-
-const services = [
-  {
-    id: 1,
-    title: "Web Development",
-    description:
-      "Custom websites and web applications built with modern technologies.",
-    icon: "🌐",
-    features: [
-      "Responsive design for all devices",
-      "Custom CMS integration",
-      "E-commerce functionality",
-      "Performance optimization",
-      "SEO-friendly architecture",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80",
-  },
-  {
-    id: 2,
-    title: "Mobile Apps",
-    description:
-      "Native and cross-platform mobile applications for iOS and Android.",
-    icon: "📱",
-    features: [
-      "Native iOS and Android development",
-      "Cross-platform solutions",
-      "UI/UX design for mobile",
-      "App Store optimization",
-      "Ongoing maintenance and updates",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80",
-  },
-  {
-    id: 3,
-    title: "UI/UX Design",
-    description:
-      "User-centered design that enhances user experience and engagement.",
-    icon: "🎨",
-    features: [
-      "User research and personas",
-      "Wireframing and prototyping",
-      "Visual design and branding",
-      "Usability testing",
-      "Design systems creation",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
-  },
-  {
-    id: 4,
-    title: "Cloud Solutions",
-    description: "Scalable cloud infrastructure and deployment solutions.",
-    icon: "☁️",
-    features: [
-      "Cloud architecture design",
-      "Migration to cloud platforms",
-      "Serverless applications",
-      "DevOps implementation",
-      "Continuous integration/deployment",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-  },
-  {
-    id: 5,
-    title: "Digital Marketing",
-    description: "Strategic marketing solutions to grow your online presence.",
-    icon: "📈",
-    features: [
-      "SEO and content strategy",
-      "Social media marketing",
-      "PPC and display advertising",
-      "Email marketing campaigns",
-      "Analytics and reporting",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-  },
-  {
-    id: 6,
-    title: "IT Consulting",
-    description: "Expert guidance on technology strategy and implementation.",
-    icon: "💼",
-    features: [
-      "Technology assessment",
-      "Digital transformation strategy",
-      "IT roadmap development",
-      "Vendor selection",
-      "Project management",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
-  },
-];
 
 const Services = () => {
   return (
@@ -201,9 +107,11 @@ const Services = () => {
                     <p className="text-muted-foreground mb-4">
                       {service.description}
                     </p>
-                    <Button variant="outline" className="w-full mt-2">
-                      Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    <Link to={`/services/${service.id}`}>
+                      <Button variant="outline" className="w-full mt-2 group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        Learn More <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -264,9 +172,11 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
-              <Button size="lg">
-                Get Started <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <Link to="/contact">
+                <Button size="lg">
+                  Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </section>
@@ -355,16 +265,20 @@ const Services = () => {
                 Contact us today for a free consultation.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" variant="secondary">
-                  View Our Portfolio
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
-                >
-                  Contact Us <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link to="/portfolio">
+                  <Button size="lg" variant="secondary">
+                    View Our Portfolio
+                  </Button>
+                </Link>
+                <Link to="/contact">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
+                  >
+                    Contact Us <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </div>

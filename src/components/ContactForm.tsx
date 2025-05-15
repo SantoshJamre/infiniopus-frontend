@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { Loader2, Send, CheckCircle, AlertCircle, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import emailService, { EmailData } from "@/services/emailService";
 
 // Form validation schema
 const formSchema = z.object({
@@ -37,6 +38,7 @@ const ContactForm = () => {
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">(
     "idle",
   );
+  const [showPopup, setShowPopup] = useState(false);
 
   const {
     register,
@@ -58,24 +60,48 @@ const ContactForm = () => {
     setFormStatus("idle");
 
     try {
-      // Simulate API call with a delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Prepare email data
+      const emailData: EmailData = {
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+      };
 
-      // Mock successful submission
-      console.log("Form submitted:", data);
-      setFormStatus("success");
-      reset();
+      // Choose one of the email service methods based on your preference
+      // Option 1: Using EmailJS
+      const result = await emailService.sendEmailWithEmailJS(emailData);
+      
+      // Option 2: Using your backend API
+      // const result = await emailService.sendEmailWithBackend(emailData);
+      
+      // Option 3: Using Formspree
+      // const result = await emailService.sendEmailWithFormspree(emailData);
 
-      // Reset success message after 5 seconds
+      if (result.success) {
+        console.log("Email sent successfully:", result.data);
+        setFormStatus("success");
+        setShowPopup(true);
+        reset();
+      } else {
+        console.error("Failed to send email:", result.error);
+        setFormStatus("error");
+        setShowPopup(true);
+      }
+
+      // Reset success/error message after 5 seconds
       setTimeout(() => {
+        setShowPopup(false);
         setFormStatus("idle");
       }, 5000);
     } catch (error) {
       console.error("Error submitting form:", error);
       setFormStatus("error");
+      setShowPopup(true);
 
       // Reset error message after 5 seconds
       setTimeout(() => {
+        setShowPopup(false);
         setFormStatus("idle");
       }, 5000);
     } finally {
@@ -84,7 +110,50 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4 bg-background">
+    <div className="w-full max-w-2xl mx-auto p-4 bg-background relative">
+      {/* Popup Message */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">
+                {formStatus === "success" ? "Success!" : "Error"}
+              </h3>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="mb-6">
+              {formStatus === "success" ? (
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
+                  <p className="text-gray-700">
+                    Thank you for your message! We've received your inquiry and will get back to you as soon as possible.
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-red-600 mr-2 mt-1 flex-shrink-0" />
+                  <p className="text-gray-700">
+                    There was a problem sending your message. Please try again later or contact us directly.
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex justify-end">
+              <Button onClick={() => setShowPopup(false)}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Contact Us</CardTitle>
@@ -94,28 +163,6 @@ const ContactForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {formStatus === "success" && (
-            <Alert className="mb-6 bg-green-50 border-green-200">
-              <CheckCircle className="h-5 w-5 text-green-600" />
-              <AlertTitle className="text-green-800">Success!</AlertTitle>
-              <AlertDescription className="text-green-700">
-                Your message has been sent successfully. We'll get back to you
-                soon.
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {formStatus === "error" && (
-            <Alert className="mb-6 bg-red-50 border-red-200">
-              <AlertCircle className="h-5 w-5 text-red-600" />
-              <AlertTitle className="text-red-800">Error</AlertTitle>
-              <AlertDescription className="text-red-700">
-                There was a problem sending your message. Please try again
-                later.
-              </AlertDescription>
-            </Alert>
-          )}
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-sm font-medium">

@@ -32,3 +32,4 @@ core
 
 .github/
 
+./package-lock.json

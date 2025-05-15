@@ -34,6 +34,14 @@ const Layout = ({
     { name: "Internship/Courses", path: "/internship-courses" },
   ];
 
+  // Function to handle scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   // Handle scroll effect for sticky header
   useEffect(() => {
     const handleScroll = () => {
@@ -173,6 +181,7 @@ const Layout = ({
                     <Link
                       to={link.path}
                       className="text-gray-300 hover:text-blue-400 transition-colors flex items-center"
+                      onClick={scrollToTop}
                     >
                       <ChevronDown className="h-3 w-3 rotate-90 mr-2" />
                       {link.name}
