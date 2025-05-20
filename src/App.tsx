@@ -10,6 +10,8 @@ import Contact from "./components/pages/Contact";
 import Mission from "./components/pages/Mission";
 import ServiceDetail from "./components/pages/ServiceDetail";
 import Portfolio from "./components/pages/Portfolio";
+import ApplyPage from "./components/pages/Apply";
+import RequestQuote from "./components/pages/RequestQuote";
 
 function App() {
   return (
@@ -23,8 +25,10 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/Career" element={<Career />} />
           <Route path="/internship-courses" element={<InternshipCourses />} />
+          <Route path="/apply" element={<ApplyPage />} />
           <Route path="/mission" element={<Mission />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/request-quote" element={<RequestQuote />} />
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>

@@ -5,6 +5,7 @@ import Layout from "../layout/Layout";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
+import { Link } from "react-router-dom";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -116,32 +117,32 @@ const jobOpenings = [
 
 const benefits = [
   {
-    icon: "💰",
+    icon: "",
     title: "Competitive Salary",
     description: "We offer above-market compensation packages based on your experience and skills.",
   },
   {
-    icon: "🏥",
+    icon: "",
     title: "Health Benefits",
     description: "Comprehensive health, dental, and vision insurance for you and your dependents.",
   },
   {
-    icon: "🏝️",
+    icon: "",
     title: "Generous PTO",
     description: "Flexible vacation policy with additional paid holidays and sick leave.",
   },
   {
-    icon: "📚",
+    icon: "",
     title: "Learning Budget",
     description: "Annual budget for courses, conferences, and professional development.",
   },
   {
-    icon: "🏠",
+    icon: "",
     title: "Remote Work",
     description: "Flexible work arrangements with remote and hybrid options available.",
   },
   {
-    icon: "🚀",
+    icon: "",
     title: "Career Growth",
     description: "Clear career paths and regular opportunities for advancement and skill development.",
   },
@@ -308,8 +309,10 @@ const Career = () => {
                           </div>
                         </div>
                       </div>
-                      <Button className="mt-4 md:mt-0">
-                        Apply Now <ArrowRight className="ml-2 h-4 w-4" />
+                      <Button asChild className="mt-4 md:mt-0">
+                        <Link to={`/apply?program=${encodeURIComponent(job.title)}&type=job`}>
+                          Apply Now <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
                       </Button>
                     </div>
                     
@@ -361,22 +364,22 @@ const Career = () => {
           >
             {[
               {
-                icon: "📝",
+                icon: "",
                 title: "Application",
                 description: "Submit your resume and cover letter through our online application system.",
               },
               {
-                icon: "📞",
+                icon: "",
                 title: "Initial Interview",
                 description: "A 30-minute call with our HR team to discuss your background and the role.",
               },
               {
-                icon: "💻",
+                icon: "",
                 title: "Technical Assessment",
                 description: "Complete a skills assessment or project relevant to the position.",
               },
               {
-                icon: "🤝",
+                icon: "",
                 title: "Final Interview",
                 description: "Meet with the team and leadership to ensure a mutual fit.",
               },
@@ -416,15 +419,16 @@ const Career = () => {
                 We're always looking for talented individuals to join our team. Send us your resume and we'll keep you in mind for future opportunities.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" variant="secondary">
-                  View All Openings
+                <Button asChild size="lg" variant="secondary">
+                  <Link to="/careers">View All Openings</Link>
                 </Button>
                 <Button
+                  asChild
                   size="lg"
                   variant="outline"
                   className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
                 >
-                  Submit Open Application
+                  <Link to="/apply">Submit Open Application</Link>
                 </Button>
               </div>
             </motion.div>

@@ -26,10 +26,10 @@ const staggerContainer = {
 const ServiceDetail = () => {
   const { id } = useParams<{ id: string }>();
   const serviceId = parseInt(id || "1");
-  
+
   // Find the service with the matching ID
   const service = services.find((s) => s.id === serviceId) || services[0];
-  
+
   // Get next and previous service IDs for navigation
   const nextServiceId = serviceId < services.length ? serviceId + 1 : 1;
   const prevServiceId = serviceId > 1 ? serviceId - 1 : services.length;
@@ -98,10 +98,10 @@ const ServiceDetail = () => {
               >
                 <h2 className="text-3xl font-bold mb-6">Overview</h2>
                 <p className="text-lg text-muted-foreground mb-8">
-                  Our {service.title} service is designed to help businesses leverage the latest technologies 
+                  Our {service.title} service is designed to help businesses leverage the latest technologies
                   to achieve their goals. We provide end-to-end solutions that are tailored to your specific needs.
                 </p>
-                
+
                 <h3 className="text-2xl font-semibold mb-4">Key Features</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                   {service.features.map((feature, index) => (
@@ -113,12 +113,12 @@ const ServiceDetail = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <h3 className="text-2xl font-semibold mb-4">Our Approach</h3>
                 <p className="text-lg text-muted-foreground mb-6">
                   We follow a systematic approach to deliver high-quality {service.title} solutions:
                 </p>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   {[
                     {
@@ -148,7 +148,7 @@ const ServiceDetail = () => {
                 </div>
               </motion.div>
             </div>
-            
+
             <div>
               <motion.div
                 initial="hidden"
@@ -162,17 +162,22 @@ const ServiceDetail = () => {
                     <p className="text-muted-foreground mb-6">
                       Contact us today to discuss how our {service.title} services can help your business grow.
                     </p>
-                    <Button className="w-full mb-4">
-                      Request a Quote
+                    <Button
+                      className="w-full mb-4"
+                      asChild
+                    >
+                      <Link to={`/request-quote?service=${encodeURIComponent(service.title)}`}>
+                        Request a Quote
+                      </Link>
                     </Button>
                     <Link to="/contact">
                       <Button variant="outline" className="w-full">
                         Contact Us
                       </Button>
                     </Link>
-                    
+
                     <Separator className="my-6" />
-                    
+
                     <h4 className="font-medium mb-3">Other Services</h4>
                     <div className="space-y-2">
                       {services
@@ -196,7 +201,7 @@ const ServiceDetail = () => {
             </div>
           </div>
         </section>
-        
+
         {/* Navigation */}
         <section className="py-8 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto border-t">
           <div className="flex flex-col sm:flex-row justify-between items-center">
@@ -214,7 +219,7 @@ const ServiceDetail = () => {
             </Link>
           </div>
         </section>
-        
+
         {/* CTA Section */}
         <section className="py-16 bg-primary text-primary-foreground">
           <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto text-center">
