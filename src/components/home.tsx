@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronRight, ExternalLink, Quote } from "lucide-react";
+import { ArrowRight, ChevronRight, ExternalLink, Zap, Target, Code, Rocket, Quote } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Button } from "./ui/button";
@@ -10,88 +10,6 @@ import HeroSection from "./sections/HeroSection";
 import ContactForm from "./ContactForm";
 import Layout from "./layout/Layout";
 import { services } from "./../data/services";
-
-const clients = [
-  {
-    id: 1,
-    name: "Microsoft",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-    industry: "Technology",
-  },
-  {
-    id: 2,
-    name: "Amazon",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-    industry: "E-commerce",
-  },
-  {
-    id: 3,
-    name: "IBM",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
-    industry: "Technology",
-  },
-  {
-    id: 4,
-    name: "Google",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-    industry: "Technology",
-  },
-  {
-    id: 5,
-    name: "Adobe",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Adobe_Systems_logo_and_wordmark.svg",
-    industry: "Software",
-  },
-  {
-    id: 6,
-    name: "Salesforce",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
-    industry: "CRM",
-  },
-  {
-    id: 7,
-    name: "Tesla",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png",
-    industry: "Automotive",
-  },
-  {
-    id: 8,
-    name: "Spotify",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg",
-    industry: "Entertainment",
-  },
-];
-
-const teamMembers = [
-  {
-    id: 1,
-    name: "Jane Smith",
-    role: "CEO & Founder",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
-    bio: "With over 15 years of industry experience, Jane leads our vision and strategy.",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    role: "CTO",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
-    bio: "John oversees all technical aspects and innovation at Infiniopus.",
-  },
-  {
-    id: 3,
-    name: "Sarah Johnson",
-    role: "Design Director",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-    bio: "Sarah brings creative vision and user-centered design principles to all our projects.",
-  },
-  {
-    id: 4,
-    name: "Michael Chen",
-    role: "Lead Developer",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
-    bio: "Michael leads our development team with expertise in multiple programming languages.",
-  },
-];
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -196,19 +114,19 @@ const Home = () => {
           </motion.div>
         </section>
 
-        {/* Testimonials Section */}
-        <section className="py-20 bg-gradient-to-br from-primary/5 to-primary/10">
-          <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+        {/* Our Expertise & Impact Section */}
+        <section className="py-16 px-4 md:px-8 lg:px-16 bg-secondary/5">
+          <div className="max-w-7xl mx-auto">
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
+              viewport={{ once: true, amount: 0.2 }}
               variants={fadeIn}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Expertise & Impact</h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Real feedback from real clients who have experienced our dedication to excellence
+                Delivering exceptional results through innovation, expertise, and dedication to excellence
               </p>
             </motion.div>
 
@@ -216,74 +134,259 @@ const Home = () => {
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            >
+              <motion.div variants={fadeIn} className="text-center p-6 bg-card rounded-lg shadow-lg">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-4xl font-bold mb-2">500+</h3>
+                <p className="text-muted-foreground">Projects Delivered</p>
+              </motion.div>
+
+              <motion.div variants={fadeIn} className="text-center p-6 bg-card rounded-lg shadow-lg">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Zap className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-4xl font-bold mb-2">98%</h3>
+                <p className="text-muted-foreground">Client Satisfaction</p>
+              </motion.div>
+
+              <motion.div variants={fadeIn} className="text-center p-6 bg-card rounded-lg shadow-lg">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Code className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-4xl font-bold mb-2">15+</h3>
+                <p className="text-muted-foreground">Technologies Mastered</p>
+              </motion.div>
+
+              <motion.div variants={fadeIn} className="text-center p-6 bg-card rounded-lg shadow-lg">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Rocket className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-4xl font-bold mb-2">24/7</h3>
+                <p className="text-muted-foreground">Support & Maintenance</p>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Innovation Hub Section */}
+        <section className="py-16 px-4 md:px-8 lg:px-16">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={fadeIn}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Innovation Hub</h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                Exploring the frontiers of technology to create groundbreaking solutions
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
               className="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
-              {[
-                {
-                  name: "Sarah Johnson",
-                  role: "CTO",
-                  company: "TechVision Inc.",
-                  quote:
-                    "Infiniopus transformed our digital presence with their innovative solutions. Their team was professional, responsive, and delivered beyond our expectations.",
-                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
-                  rating: 5,
-                },
-                {
-                  name: "Michael Chen",
-                  role: "Marketing Director",
-                  company: "Global Brands",
-                  quote:
-                    "Working with Infiniopus was a game-changer for our marketing strategy. Their insights and execution helped us achieve record-breaking engagement.",
-                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=michael",
-                  rating: 5,
-                },
-                {
-                  name: "Emily Rodriguez",
-                  role: "CEO",
-                  company: "Startup Innovators",
-                  quote:
-                    "As a startup, finding the right partner was crucial. Infiniopus understood our vision and helped us build a solid foundation for growth.",
-                  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
-                  rating: 5,
-                },
-              ].map((testimonial, index) => (
-                <motion.div key={index} variants={fadeIn}>
-                  <div className="bg-background rounded-xl p-8 shadow-lg h-full flex flex-col relative">
-                    <div className="absolute -top-6 left-8">
-                      <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-                        <Quote className="h-6 w-6 text-primary-foreground" />
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-1 mb-4 mt-4">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <svg key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                        </svg>
-                      ))}
-                    </div>
-                    
-                    <p className="italic text-muted-foreground mb-6 flex-grow">"{testimonial.quote}"</p>
-                    
-                    <div className="flex items-center mt-auto">
-                      <div className="h-12 w-12 rounded-full overflow-hidden mr-4">
-                        <img 
-                          src={testimonial.avatar} 
-                          alt={testimonial.name}
-                          className="h-full w-full object-cover"
+              <motion.div variants={fadeIn} className="relative group">
+                <Card className="h-full transform transition-transform group-hover:scale-105">
+                  <CardContent className="p-6">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                      <svg
+                        className="h-6 w-6 text-primary"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
                         />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold">{testimonial.name}</h4>
-                        <p className="text-sm text-muted-foreground">{testimonial.role}, {testimonial.company}</p>
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">AI & Machine Learning</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Harnessing the power of artificial intelligence to create smart, adaptive solutions
+                      that evolve with your business needs.
+                    </p>
+                    <Link to="/services" className="inline-flex items-center text-primary hover:underline">
+                      Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={fadeIn} className="relative group">
+                <Card className="h-full transform transition-transform group-hover:scale-105">
+                  <CardContent className="p-6">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                      <svg
+                        className="h-6 w-6 text-primary"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">Cloud Architecture</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Building scalable, secure, and efficient cloud infrastructure that powers your
+                      digital transformation journey.
+                    </p>
+                    <Link to="/services" className="inline-flex items-center text-primary hover:underline">
+                      Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={fadeIn} className="relative group">
+                <Card className="h-full transform transition-transform group-hover:scale-105">
+                  <CardContent className="p-6">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                      <svg
+                        className="h-6 w-6 text-primary"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">Mobile Innovation</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Creating cutting-edge mobile experiences that combine beautiful design with
+                      powerful functionality.
+                    </p>
+                    <Link to="/services" className="inline-flex items-center text-primary hover:underline">
+                      Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Success Stories Section */}
+        <section className="py-20 bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/10">
+          <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={fadeIn}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Success Stories</h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                Transforming ideas into impactful solutions - explore our latest success stories
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {/* Success Story 1 */}
+              <motion.div variants={fadeIn} className="group">
+                <Card className="overflow-hidden h-full transform transition-all duration-300 hover:shadow-xl">
+                  <div className="relative h-48 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-white text-center p-6">
+                        <h3 className="text-2xl font-bold mb-2">200% ROI</h3>
+                        <p className="text-white/90">E-commerce Platform</p>
                       </div>
                     </div>
                   </div>
-                </motion.div>
-              ))}
+                  <CardContent className="p-6">
+                    <p className="text-muted-foreground mb-4">
+                      Revolutionized online sales with AI-powered recommendations, resulting in 3x increase in customer engagement and 200% ROI within 6 months.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">AI/ML</span>
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">E-commerce</span>
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Analytics</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Success Story 2 */}
+              <motion.div variants={fadeIn} className="group">
+                <Card className="overflow-hidden h-full transform transition-all duration-300 hover:shadow-xl">
+                  <div className="relative h-48 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 to-primary/90 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-white text-center p-6">
+                        <h3 className="text-2xl font-bold mb-2">50% Faster</h3>
+                        <p className="text-white/90">Cloud Migration</p>
+                      </div>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <p className="text-muted-foreground mb-4">
+                      Successfully migrated legacy systems to cloud infrastructure, reducing operational costs by 40% and improving system performance by 50%.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Cloud</span>
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">DevOps</span>
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">AWS</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Success Story 3 */}
+              <motion.div variants={fadeIn} className="group">
+                <Card className="overflow-hidden h-full transform transition-all duration-300 hover:shadow-xl">
+                  <div className="relative h-48 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-white text-center p-6">
+                        <h3 className="text-2xl font-bold mb-2">1M+ Users</h3>
+                        <p className="text-white/90">Mobile App</p>
+                      </div>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <p className="text-muted-foreground mb-4">
+                      Developed a feature-rich mobile app that achieved 1M+ downloads in first quarter, with 4.8/5 user rating and 92% retention rate.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Mobile</span>
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">React Native</span>
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">UX</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </motion.div>
-            
+
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -291,102 +394,12 @@ const Home = () => {
               variants={fadeIn}
               className="mt-12 text-center"
             >
-              <Button variant="outline" size="lg" className="group">
-                View All Testimonials <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Clients Section */}
-        <section className="py-16 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={fadeIn}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Clients</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              We've had the privilege of working with amazing organizations
-              across various industries.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8"
-          >
-            {clients.map((client) => (
-              <motion.div
-                key={client.id}
-                variants={fadeIn}
-                className="flex items-center justify-center"
-              >
-                <div className="bg-background rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-300 w-full h-24 flex items-center justify-center">
-                  <img
-                    src={client.logo}
-                    alt={client.name}
-                    className="max-h-12 max-w-full"
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </section>
-
-        {/* Team Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-              variants={fadeIn}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Team</h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Meet the talented individuals who make the magic happen at
-                Infiniopus.
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-            >
-              {teamMembers.map((member) => (
-                <motion.div key={member.id} variants={fadeIn}>
-                  <Card className="h-full hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                    <div className="aspect-square relative overflow-hidden bg-muted">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-semibold mb-1">
-                        {member.name}
-                      </h3>
-                      <p className="text-primary font-medium mb-3">
-                        {member.role}
-                      </p>
-                      <p className="text-muted-foreground text-sm">
-                        {member.bio}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+              <Link to="/portfolio">
+                <Button variant="outline" size="lg" className="group">
+                  View All Success Stories 
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </section>
