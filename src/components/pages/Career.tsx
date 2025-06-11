@@ -12,6 +12,14 @@ const fadeIn = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};
+
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
@@ -310,7 +318,10 @@ const Career = () => {
                         </div>
                       </div>
                       <Button asChild className="mt-4 md:mt-0">
-                        <Link to={`/apply?program=${encodeURIComponent(job.title)}&type=job`}>
+                        <Link 
+                          to={`/apply-job?position=${encodeURIComponent(job.title)}&department=${encodeURIComponent(job.department)}`}
+                          onClick={scrollToTop}
+                        >
                           Apply Now <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
@@ -420,7 +431,7 @@ const Career = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" variant="secondary">
-                  <Link to="/careers">View All Openings</Link>
+                  <Link onClick={scrollToTop} to={""}>View All Openings</Link>
                 </Button>
                 <Button
                   asChild
@@ -428,7 +439,7 @@ const Career = () => {
                   variant="outline"
                   className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
                 >
-                  <Link to="/apply">Submit Open Application</Link>
+                  <Link to="/apply-job" onClick={scrollToTop}>Submit Open Application</Link>
                 </Button>
               </div>
             </motion.div>

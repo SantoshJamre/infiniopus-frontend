@@ -27,15 +27,26 @@ import {
 } from "@/components/ui/select";
 import emailService, { EmailData } from "@/services/emailService";
 
-// Form validation schema
+// Form validation schema for internships and courses
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
-  phone: z.string().min(10, { message: "Please enter a valid phone number" }),
-  program: z.string().min(1, { message: "Please select a program" }),
-  education: z.string().min(2, { message: "Please enter your education details" }),
+  phone: z.string().regex(/^\+91\s[6-9]\d{9}$/, { message: "Please enter a valid Indian phone number (e.g., +91 9876543210)" }),
+  program: z.string().min(1, { message: "Program is required" }),
+  
+  // Education fields
+  tenthPercentage: z.string().min(1, { message: "10th percentage/CGPA is required" }),
+  tenthSchool: z.string().min(1, { message: "10th school name is required" }),
+  twelfthPercentage: z.string().min(1, { message: "12th percentage/CGPA is required" }),
+  twelfthSchool: z.string().min(1, { message: "12th school name is required" }),
+  collegePercentage: z.string().min(1, { message: "College percentage/CGPA is required" }),
+  collegeName: z.string().min(1, { message: "College name is required" }),
+  courseType: z.string().min(1, { message: "Please select course type" }),
+  
   experience: z.string().optional(),
-  message: z.string().min(10, { message: "Cover letter must be at least 10 characters" }),
+  motivation: z.string().min(20, { message: "Please tell us why you're interested (minimum 20 characters)" }),
+  goals: z.string().min(10, { message: "Please share your learning goals (minimum 10 characters)" }),
+  availability: z.string().min(1, { message: "Please specify your availability" }),
   resume: z.any().optional(),
 });
 
@@ -50,29 +61,20 @@ const ApplicationForm = ({ defaultProgram, programType }: ApplicationFormProps) 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle");
   const [showPopup, setShowPopup] = useState(false);
-  const [internships, setInternships] = useState<{id: number, title: string}[]>([]);
-  const [courses, setCourses] = useState<{id: number, title: string}[]>([]);
   
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Get program from URL parameters
   useEffect(() => {
-    // Fetch internships and courses data
-    // This is a simplified version - in a real app, you might fetch from an API
-    import("@/components/pages/InternshipCourses").then((module) => {
-      setInternships(module.internships || []);
-      setCourses(module.courses || []);
-    }).catch(error => {
-      console.error("Error loading programs:", error);
-    });
-    
-    // Check for program in URL params
     const params = new URLSearchParams(location.search);
     const programParam = params.get('program');
-    if (programParam && !defaultProgram) {
-      setValue("program", programParam);
+    if (programParam) {
+      setValue("program", decodeURIComponent(programParam));
+    } else if (defaultProgram) {
+      setValue("program", defaultProgram);
     }
-  }, [location]);
+  }, [location, defaultProgram]);
 
   const {
     register,
@@ -87,9 +89,17 @@ const ApplicationForm = ({ defaultProgram, programType }: ApplicationFormProps) 
       email: "",
       phone: "",
       program: defaultProgram || "",
-      education: "",
+      tenthPercentage: "",
+      tenthSchool: "",
+      twelfthPercentage: "",
+      twelfthSchool: "",
+      collegePercentage: "",
+      collegeName: "",
+      courseType: "",
       experience: "",
-      message: "",
+      motivation: "",
+      goals: "",
+      availability: "",
     },
   });
 
@@ -106,17 +116,27 @@ const ApplicationForm = ({ defaultProgram, programType }: ApplicationFormProps) 
         message: `
 Program: ${data.program}
 Phone: ${data.phone}
-Education: ${data.education}
-Experience: ${data.experience || 'N/A'}
 
-Cover Letter:
-${data.message}
+Educational Background:
+10th Grade: ${data.tenthPercentage} - ${data.tenthSchool}
+12th Grade: ${data.twelfthPercentage} - ${data.twelfthSchool}
+College: ${data.collegePercentage} - ${data.collegeName} (${data.courseType})
+
+Experience: ${data.experience || 'No prior experience'}
+Availability: ${data.availability}
+
+Why are you interested in this program?
+${data.motivation}
+
+Learning Goals:
+${data.goals}
         `,
+        resume: data.resume?.[0],
       };
 
       // Send application email
-      const result = await emailService.sendEmailWithEmailJS(emailData);
-      
+      const result = await emailService.APICall(emailData, '/apply-course-internship', 'POST');
+
       if (result.success) {
         console.log("Application submitted successfully:", result.data);
         setFormStatus("success");
@@ -127,248 +147,431 @@ ${data.message}
         setFormStatus("error");
         setShowPopup(true);
       }
-
-      // Reset success/error message after 5 seconds
-      setTimeout(() => {
-        setShowPopup(false);
-        setFormStatus("idle");
-        
-        // Redirect to internship-courses page on success
-        if (formStatus === "success") {
-          navigate("/internship-courses");
-        }
-      }, 5000);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Error submitting application:", error);
       setFormStatus("error");
       setShowPopup(true);
-
-      // Reset error message after 5 seconds
-      setTimeout(() => {
-        setShowPopup(false);
-        setFormStatus("idle");
-      }, 5000);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const closePopup = () => {
+    setShowPopup(false);
+    if (formStatus === "success") {
+      navigate("/internship-courses");
+    }
+  };
+
   return (
-    <div className="w-full max-w-2xl mx-auto p-4 bg-background relative">
-      {/* Popup Message */}
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 py-12 px-4">
+      {/* Success/Error Popup */}
       {showPopup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">
-                {formStatus === "success" ? "Application Submitted!" : "Error"}
-              </h3>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="text-gray-500 hover:text-gray-700"
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                {formStatus === "success" ? (
+                  <div className="p-2 bg-green-100 rounded-full">
+                    <CheckCircle className="h-6 w-6 text-green-600" />
+                  </div>
+                ) : (
+                  <div className="p-2 bg-red-100 rounded-full">
+                    <AlertCircle className="h-6 w-6 text-red-600" />
+                  </div>
+                )}
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {formStatus === "success" ? "Application Submitted!" : "Submission Failed"}
+                </h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={closePopup}
+                className="h-8 w-8 p-0 hover:bg-gray-100"
               >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            
-            <div className="mb-4">
-              {formStatus === "success" ? (
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                  <p className="text-gray-700">
-                    Thank you for your application! We've received your submission and will review it shortly. We'll contact you soon regarding the next steps.
-                  </p>
-                </div>
-              ) : (
-                <div className="flex items-start">
-                  <AlertCircle className="h-5 w-5 text-red-600 mr-2 mt-1 flex-shrink-0" />
-                  <p className="text-gray-700">
-                    There was a problem submitting your application. Please try again later or contact us directly.
-                  </p>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex justify-end">
-              <Button onClick={() => setShowPopup(false)}>
-                Close
+                <X className="h-4 w-4" />
               </Button>
             </div>
+            <p className="text-gray-600 mb-6">
+              {formStatus === "success"
+                ? "Thank you for your application! We'll review it and get back to you soon."
+                : "There was an error submitting your application. Please try again or contact us directly."}
+            </p>
+            <Button onClick={closePopup} className="w-full bg-green-600 hover:bg-green-700">
+              {formStatus === "success" ? "Continue" : "Try Again"}
+            </Button>
           </div>
         </div>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Apply Now</CardTitle>
-          <CardDescription>
-            Fill out the form below to apply for our {programType || ''} program.
+      <Card className="max-w-5xl mx-auto shadow-xl border-0 bg-white/95 backdrop-blur-sm">
+        <CardHeader className="text-center bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-lg">
+          <CardTitle className="text-3xl md:text-4xl font-bold mb-2">
+            🎓 Program Application
+          </CardTitle>
+          <CardDescription className="text-green-100 text-lg">
+            Apply for <span className="font-semibold text-white">{defaultProgram || 'our program'}</span>
+            <br />
+            Start your learning journey with us!
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm font-medium">
-                Full Name
-              </Label>
-              <Input
-                id="name"
-                placeholder="Your full name"
-                {...register("name")}
-                className={errors.name ? "border-red-500" : ""}
-              />
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name.message}</p>
-              )}
+        <CardContent className="space-y-8 p-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+            {/* Personal Information */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-green-600 font-semibold text-sm">1</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 border-b-2 border-green-200 pb-1">
+                  Personal Information
+                </h3>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-sm font-medium text-gray-600">
+                    Full Name *
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Your full name"
+                    {...register("name")}
+                    className={errors.name ? "border-red-500" : "border-gray-300"}
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-red-500">{errors.name.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium text-gray-600">
+                    Email Address *
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    {...register("email")}
+                    className={errors.email ? "border-red-500" : "border-gray-300"}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-500">{errors.email.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-medium text-gray-600">
+                    Phone Number *
+                  </Label>
+                  <Input
+                    id="phone"
+                    placeholder="e.g., +91 9876543210"
+                    {...register("phone")}
+                    className={errors.phone ? "border-red-500" : "border-gray-300"}
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-red-500">{errors.phone.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="program" className="text-sm font-medium text-gray-600">
+                    Program *
+                  </Label>
+                  <Input
+                    id="program"
+                    value={defaultProgram || ""}
+                    readOnly
+                    className="bg-gray-100 border-gray-300"
+                    {...register("program")}
+                  />
+                  {errors.program && (
+                    <p className="text-sm text-red-500">{errors.program.message}</p>
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your.email@example.com"
-                {...register("email")}
-                className={errors.email ? "border-red-500" : ""}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
-              )}
+            {/* Educational Background */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-green-600 font-semibold text-sm">2</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 border-b-2 border-green-200 pb-1">
+                  Educational Background
+                </h3>
+              </div>
+              
+              {/* 10th Grade */}
+              <div className="space-y-4">
+                <h4 className="font-medium text-gray-600">10th Grade</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="tenthPercentage" className="text-sm font-medium text-gray-600">
+                      CGPA/Percentage *
+                    </Label>
+                    <Input
+                      id="tenthPercentage"
+                      placeholder="e.g., 85% or 8.5 CGPA"
+                      {...register("tenthPercentage")}
+                      className={errors.tenthPercentage ? "border-red-500" : "border-gray-300"}
+                    />
+                    {errors.tenthPercentage && (
+                      <p className="text-sm text-red-500">{errors.tenthPercentage.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="tenthSchool" className="text-sm font-medium text-gray-600">
+                      School Name *
+                    </Label>
+                    <Input
+                      id="tenthSchool"
+                      placeholder="Your school name"
+                      {...register("tenthSchool")}
+                      className={errors.tenthSchool ? "border-red-500" : "border-gray-300"}
+                    />
+                    {errors.tenthSchool && (
+                      <p className="text-sm text-red-500">{errors.tenthSchool.message}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* 12th Grade */}
+              <div className="space-y-4">
+                <h4 className="font-medium text-gray-600">12th Grade</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="twelfthPercentage" className="text-sm font-medium text-gray-600">
+                      CGPA/Percentage *
+                    </Label>
+                    <Input
+                      id="twelfthPercentage"
+                      placeholder="e.g., 85% or 8.5 CGPA"
+                      {...register("twelfthPercentage")}
+                      className={errors.twelfthPercentage ? "border-red-500" : "border-gray-300"}
+                    />
+                    {errors.twelfthPercentage && (
+                      <p className="text-sm text-red-500">{errors.twelfthPercentage.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="twelfthSchool" className="text-sm font-medium text-gray-600">
+                      School Name *
+                    </Label>
+                    <Input
+                      id="twelfthSchool"
+                      placeholder="Your school name"
+                      {...register("twelfthSchool")}
+                      className={errors.twelfthSchool ? "border-red-500" : "border-gray-300"}
+                    />
+                    {errors.twelfthSchool && (
+                      <p className="text-sm text-red-500">{errors.twelfthSchool.message}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* College */}
+              <div className="space-y-4">
+                <h4 className="font-medium text-gray-600">College/University</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="collegePercentage" className="text-sm font-medium text-gray-600">
+                      CGPA/Percentage *
+                    </Label>
+                    <Input
+                      id="collegePercentage"
+                      placeholder="e.g., 85% or 8.5 CGPA"
+                      {...register("collegePercentage")}
+                      className={errors.collegePercentage ? "border-red-500" : "border-gray-300"}
+                    />
+                    {errors.collegePercentage && (
+                      <p className="text-sm text-red-500">{errors.collegePercentage.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="collegeName" className="text-sm font-medium text-gray-600">
+                      College/University Name *
+                    </Label>
+                    <Input
+                      id="collegeName"
+                      placeholder="Your college/university name"
+                      {...register("collegeName")}
+                      className={errors.collegeName ? "border-red-500" : "border-gray-300"}
+                    />
+                    {errors.collegeName && (
+                      <p className="text-sm text-red-500">{errors.collegeName.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="courseType" className="text-sm font-medium text-gray-600">
+                      Course Type *
+                    </Label>
+                    <Select onValueChange={(value) => setValue("courseType", value)}>
+                      <SelectTrigger
+                        id="courseType"
+                        className={errors.courseType ? "border-red-500" : "border-gray-300"}
+                      >
+                        <SelectValue placeholder="Select course type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="full-time">Full-time</SelectItem>
+                        <SelectItem value="part-time">Part-time</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {errors.courseType && (
+                      <p className="text-sm text-red-500">{errors.courseType.message}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-medium">
-                Phone Number
-              </Label>
-              <Input
-                id="phone"
-                placeholder="Your phone number"
-                {...register("phone")}
-                className={errors.phone ? "border-red-500" : ""}
-              />
-              {errors.phone && (
-                <p className="text-sm text-red-500">{errors.phone.message}</p>
-              )}
+            {/* Experience */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-green-600 font-semibold text-sm">3</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 border-b-2 border-green-200 pb-1">
+                  Experience & Motivation
+                </h3>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="experience" className="text-sm font-medium text-gray-600">
+                  Relevant Experience (Optional)
+                </Label>
+                <Textarea
+                  id="experience"
+                  placeholder="Any relevant projects, internships, or experience related to this program..."
+                  rows={3}
+                  {...register("experience")}
+                  className={errors.experience ? "border-red-500" : "border-gray-300"}
+                />
+                {errors.experience && (
+                  <p className="text-sm text-red-500">{errors.experience.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="motivation" className="text-sm font-medium text-gray-600">
+                  Why are you interested in this program? *
+                </Label>
+                <Textarea
+                  id="motivation"
+                  placeholder="Tell us what motivates you to apply for this program and how it aligns with your interests..."
+                  rows={4}
+                  {...register("motivation")}
+                  className={errors.motivation ? "border-red-500" : "border-gray-300"}
+                />
+                {errors.motivation && (
+                  <p className="text-sm text-red-500">{errors.motivation.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="goals" className="text-sm font-medium text-gray-600">
+                  What are your learning goals? *
+                </Label>
+                <Textarea
+                  id="goals"
+                  placeholder="What do you hope to learn and achieve through this program?"
+                  rows={3}
+                  {...register("goals")}
+                  className={errors.goals ? "border-red-500" : "border-gray-300"}
+                />
+                {errors.goals && (
+                  <p className="text-sm text-red-500">{errors.goals.message}</p>
+                )}
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="program" className="text-sm font-medium">
-                Program
-              </Label>
-              <Select 
-                onValueChange={(value) => setValue("program", value)} 
-                defaultValue={defaultProgram}
+            {/* Availability */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-green-600 font-semibold text-sm">4</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 border-b-2 border-green-200 pb-1">
+                  Availability & Documents
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="availability" className="text-sm font-medium text-gray-600">
+                    Availability *
+                  </Label>
+                  <Select onValueChange={(value) => setValue("availability", value)}>
+                    <SelectTrigger
+                      id="availability"
+                      className={errors.availability ? "border-red-500" : "border-gray-300"}
+                    >
+                      <SelectValue placeholder="Select your availability" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="full-time">Full-time</SelectItem>
+                      <SelectItem value="part-time">Part-time</SelectItem>
+                      <SelectItem value="weekends">Weekends only</SelectItem>
+                      <SelectItem value="flexible">Flexible schedule</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {errors.availability && (
+                    <p className="text-sm text-red-500">{errors.availability.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="resume" className="text-sm font-medium text-gray-600">
+                    Resume/CV (Optional)
+                  </Label>
+                  <Input
+                    id="resume"
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    {...register("resume")}
+                    className="cursor-pointer border-gray-300"
+                  />
+                  <p className="text-xs text-gray-600">
+                    Accepted formats: PDF, DOC, DOCX (Max 5MB)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-center pt-6">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full md:w-auto px-8 py-3 text-lg bg-green-600 hover:bg-green-700"
               >
-                <SelectTrigger 
-                  id="program"
-                  className={errors.program ? "border-red-500" : ""}
-                >
-                  <SelectValue placeholder="Select a program" />
-                </SelectTrigger>
-                <SelectContent>
-                  {programType !== 'course' && internships.map((internship) => (
-                    <SelectItem key={`internship-${internship.id}`} value={internship.title}>
-                      {internship.title} (Internship)
-                    </SelectItem>
-                  ))}
-                  {programType !== 'internship' && courses.map((course) => (
-                    <SelectItem key={`course-${course.id}`} value={course.title}>
-                      {course.title} (Course)
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.program && (
-                <p className="text-sm text-red-500">{errors.program.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="education" className="text-sm font-medium">
-                Education
-              </Label>
-              <Textarea
-                id="education"
-                placeholder="Your educational background..."
-                rows={2}
-                {...register("education")}
-                className={errors.education ? "border-red-500" : ""}
-              />
-              {errors.education && (
-                <p className="text-sm text-red-500">{errors.education.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="experience" className="text-sm font-medium">
-                Experience (Optional)
-              </Label>
-              <Textarea
-                id="experience"
-                placeholder="Your relevant experience..."
-                rows={2}
-                {...register("experience")}
-                className={errors.experience ? "border-red-500" : ""}
-              />
-              {errors.experience && (
-                <p className="text-sm text-red-500">{errors.experience.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="message" className="text-sm font-medium">
-                Cover Letter
-              </Label>
-              <Textarea
-                id="message"
-                placeholder="Why are you interested in this program?"
-                rows={4}
-                {...register("message")}
-                className={errors.message ? "border-red-500" : ""}
-              />
-              {errors.message && (
-                <p className="text-sm text-red-500">{errors.message.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="resume" className="text-sm font-medium">
-                Resume/CV (Optional)
-              </Label>
-              <Input
-                id="resume"
-                type="file"
-                accept=".pdf,.doc,.docx"
-                {...register("resume")}
-                className="cursor-pointer"
-              />
-              <p className="text-xs text-muted-foreground">
-                Accepted formats: PDF, DOC, DOCX (Max 5MB)
-              </p>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="mr-2 h-4 w-4" />
+                    Submit Application
+                  </>
+                )}
+              </Button>
             </div>
           </form>
         </CardContent>
-        <CardFooter>
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            disabled={isSubmitting}
-            className="w-full md:w-auto"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
-              </>
-            ) : (
-              <>
-                <Send className="mr-2 h-4 w-4" />
-                Submit Application
-              </>
-            )}
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   );

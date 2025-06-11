@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronRight, ExternalLink, Zap, Target, Code, Rocket, Quote } from "lucide-react";
+import { ArrowRight, ChevronRight, ExternalLink, Zap, Target, Code, Rocket, Quote, ShoppingCart, Cloud, Smartphone } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Button } from "./ui/button";
@@ -311,13 +311,16 @@ const Home = () => {
               viewport={{ once: true, amount: 0.2 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {/* Success Story 1 */}
+              {/* Success Story 1 - E-commerce */}
               <motion.div variants={fadeIn} className="group">
                 <Card className="overflow-hidden h-full transform transition-all duration-300 hover:shadow-xl">
                   <div className="relative h-48 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-white text-center p-6">
+                        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                          <ShoppingCart className="h-8 w-8 text-white" />
+                        </div>
                         <h3 className="text-2xl font-bold mb-2">200% ROI</h3>
                         <p className="text-white/90">E-commerce Platform</p>
                       </div>
@@ -336,13 +339,16 @@ const Home = () => {
                 </Card>
               </motion.div>
 
-              {/* Success Story 2 */}
+              {/* Success Story 2 - Cloud Migration */}
               <motion.div variants={fadeIn} className="group">
                 <Card className="overflow-hidden h-full transform transition-all duration-300 hover:shadow-xl">
                   <div className="relative h-48 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 to-primary/90 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500 via-teal-600 to-blue-500 group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-white text-center p-6">
+                        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                          <Cloud className="h-8 w-8 text-white" />
+                        </div>
                         <h3 className="text-2xl font-bold mb-2">50% Faster</h3>
                         <p className="text-white/90">Cloud Migration</p>
                       </div>
@@ -361,13 +367,16 @@ const Home = () => {
                 </Card>
               </motion.div>
 
-              {/* Success Story 3 */}
+              {/* Success Story 3 - Mobile App */}
               <motion.div variants={fadeIn} className="group">
                 <Card className="overflow-hidden h-full transform transition-all duration-300 hover:shadow-xl">
                   <div className="relative h-48 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-white text-center p-6">
+                        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                          <Smartphone className="h-8 w-8 text-white" />
+                        </div>
                         <h3 className="text-2xl font-bold mb-2">1M+ Users</h3>
                         <p className="text-white/90">Mobile App</p>
                       </div>
@@ -429,7 +438,7 @@ const Home = () => {
                   <div>
                     <h4 className="font-medium">Address</h4>
                     <p className="text-muted-foreground">
-                      123 Innovation Way, Tech City, TC 12345
+                     Indore, Madhya Pradesh
                     </p>
                   </div>
                 </div>
@@ -439,7 +448,7 @@ const Home = () => {
                   </div>
                   <div>
                     <h4 className="font-medium">Phone</h4>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                    <p className="text-muted-foreground">+91-8109878096</p>
                   </div>
                 </div>
                 <div className="flex items-center">

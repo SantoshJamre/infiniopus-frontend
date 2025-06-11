@@ -19,10 +19,10 @@ class EmailService {
    * @param emailData - The email data to send
    * @returns Promise with the response
    */
-  async sendEmailWithEmailJS(emailData: EmailData): Promise<any> {
+  async APICall(emailData: any, route: string, method:string = "POST"): Promise<any> {
     try {
-      const response = await fetch(Config.BACKEND_API_URL + '/contact-us', {
-        method: 'POST',
+      const response = await fetch(Config.BACKEND_API_URL + route, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -45,42 +45,6 @@ class EmailService {
     }
   }
 
-  /**
-   * Send email using a custom backend API
-   * @param emailData - The email data to send
-   * @returns Promise with the response
-   */
-  async sendEmailWithBackend(emailData: EmailData): Promise<any> {
-    try {
-      // Replace with your backend API endpoint for sending emails
-      const apiUrl = 'https://your-backend-api.com/api/send-email';
-
-      const response = await axios.post(apiUrl, emailData);
-      return { success: true, data: response.data };
-    } catch (error) {
-      console.error('Error sending email with backend API:', error);
-      return { success: false, error };
-    }
-  }
-
-  /**
-   * Send email using Formspree
-   * @param emailData - The email data to send
-   * @returns Promise with the response
-   */
-  async sendEmailWithFormspree(emailData: EmailData): Promise<any> {
-    try {
-      // Replace with your Formspree form ID
-      const formspreeId = 'YOUR_FORMSPREE_FORM_ID';
-      const formspreeUrl = `https://formspree.io/f/${formspreeId}`;
-
-      const response = await axios.post(formspreeUrl, emailData);
-      return { success: true, data: response.data };
-    } catch (error) {
-      console.error('Error sending email with Formspree:', error);
-      return { success: false, error };
-    }
-  }
 }
 
 // Create a singleton instance

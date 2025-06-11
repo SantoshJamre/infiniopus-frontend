@@ -198,12 +198,12 @@ const Layout = ({
                 <li className="flex items-start">
                   <MapPin className="h-5 w-5 text-blue-400 mr-3 mt-0.5" />
                   <span className="text-gray-300">
-                    123 Innovation Street, Tech City, TC 10101
+                    Indore, Madhya Pradesh
                   </span>
                 </li>
                 <li className="flex items-center">
                   <Phone className="h-5 w-5 text-blue-400 mr-3" />
-                  <span className="text-gray-300">+1 (555) 123-4567</span>
+                  <span className="text-gray-300">+91-8109878096</span>
                 </li>
                 <li className="flex items-center">
                   <Mail className="h-5 w-5 text-blue-400 mr-3" />

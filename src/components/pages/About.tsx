@@ -70,7 +70,7 @@ const About = () => {
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Story</h2>
               <p className="text-lg text-muted-foreground mb-4">
-                Founded in 2015, Infiniopus began with a simple mission: to help
+                Founded in 2022, Infiniopus began with a simple mission: to help
                 businesses harness the power of technology to achieve their
                 goals. What started as a small team of passionate developers has
                 grown into a full-service digital agency with a global client
@@ -231,7 +231,7 @@ const About = () => {
           </motion.div>
         </section>
 
-        {/* Team Section */}
+        {/* Why Choose Us Section - Replace with your preferred section */}
         <section className="py-16 bg-muted/30">
           <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
             <motion.div
@@ -242,10 +242,10 @@ const About = () => {
               className="text-center mb-12"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Our Leadership Team
+                Why Choose Infiniopus?
               </h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Meet the talented individuals who drive our vision forward
+                What sets us apart in the digital landscape
               </p>
             </motion.div>
 
@@ -254,56 +254,53 @@ const About = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {[
                 {
-                  name: "Jane Smith",
-                  role: "CEO & Founder",
-                  image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
-                  bio: "With over 15 years of industry experience, Jane leads our vision and strategy.",
+                  icon: "🚀",
+                  title: "Proven Track Record",
+                  description:
+                    "Successfully delivered 200+ projects with a 98% client satisfaction rate.",
                 },
                 {
-                  name: "John Doe",
-                  role: "CTO",
-                  image: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
-                  bio: "John oversees all technical aspects and innovation at Infiniopus.",
+                  icon: "⚡",
+                  title: "Fast Turnaround",
+                  description:
+                    "Agile development process ensures quick delivery without compromising quality.",
                 },
                 {
-                  name: "Sarah Johnson",
-                  role: "Design Director",
-                  image:
-                    "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-                  bio: "Sarah brings creative vision and user-centered design principles to all our projects.",
+                  icon: "🔒",
+                  title: "Security First",
+                  description:
+                    "Industry-leading security practices protect your data and digital assets.",
                 },
                 {
-                  name: "Michael Chen",
-                  role: "Lead Developer",
-                  image:
-                    "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
-                  bio: "Michael leads our development team with expertise in multiple programming languages.",
+                  icon: "📱",
+                  title: "Modern Technology",
+                  description:
+                    "Cutting-edge tools and frameworks to build future-ready solutions.",
                 },
-              ].map((member, index) => (
+                {
+                  icon: "💬",
+                  title: "24/7 Support",
+                  description:
+                    "Round-the-clock support ensures your business never misses a beat.",
+                },
+                {
+                  icon: "📈",
+                  title: "Scalable Solutions",
+                  description:
+                    "Built to grow with your business, from startup to enterprise scale.",
+                },
+              ].map((feature, index) => (
                 <motion.div key={index} variants={fadeIn}>
-                  <div className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-                    <div className="aspect-square relative overflow-hidden bg-muted">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="object-cover w-full h-full"
-                      />
+                  <div className="bg-background rounded-lg p-6 shadow-sm h-full hover:shadow-md transition-shadow duration-300">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                      <span className="text-2xl">{feature.icon}</span>
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold mb-1">
-                        {member.name}
-                      </h3>
-                      <p className="text-primary font-medium mb-3">
-                        {member.role}
-                      </p>
-                      <p className="text-muted-foreground text-sm">
-                        {member.bio}
-                      </p>
-                    </div>
+                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                    <p className="text-muted-foreground">{feature.description}</p>
                   </div>
                 </motion.div>
               ))}
