@@ -108,30 +108,25 @@ const ApplicationForm = ({ defaultProgram, programType }: ApplicationFormProps) 
     setFormStatus("idle");
 
     try {
-      // Prepare email data
+      // Prepare email data in key-value format
       const emailData: EmailData = {
         name: data.name,
         email: data.email,
         subject: `Application for ${data.program}`,
-        message: `
-Program: ${data.program}
-Phone: ${data.phone}
-
-Educational Background:
-10th Grade: ${data.tenthPercentage} - ${data.tenthSchool}
-12th Grade: ${data.twelfthPercentage} - ${data.twelfthSchool}
-College: ${data.collegePercentage} - ${data.collegeName} (${data.courseType})
-
-Experience: ${data.experience || 'No prior experience'}
-Availability: ${data.availability}
-
-Why are you interested in this program?
-${data.motivation}
-
-Learning Goals:
-${data.goals}
-        `,
-        resume: data.resume?.[0],
+        phone: data.phone,
+        program: data.program,
+        tenthPercentage: data.tenthPercentage,
+        tenthSchool: data.tenthSchool,
+        twelfthPercentage: data.twelfthPercentage,
+        twelfthSchool: data.twelfthSchool,
+        collegePercentage: data.collegePercentage,
+        collegeName: data.collegeName,
+        courseType: data.courseType,
+        experience: data.experience || '',
+        motivation: data.motivation,
+        goals: data.goals,
+        availability: data.availability,
+        resume: data.resume?.[0] || undefined, // Handle file properly
       };
 
       // Send application email

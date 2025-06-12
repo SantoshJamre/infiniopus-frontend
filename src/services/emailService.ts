@@ -7,7 +7,21 @@ export interface EmailData {
   name: string;
   email: string;
   subject: string;
-  message: string;
+  phone?: string;
+  program?: string;
+  tenthPercentage?: string;
+  tenthSchool?: string;
+  twelfthPercentage?: string;
+  twelfthSchool?: string;
+  collegePercentage?: string;
+  collegeName?: string;
+  courseType?: string;
+  experience?: string;
+  motivation?: string;
+  goals?: string;
+  availability?: string;
+  resume?: File;
+  [key: string]: any; // Allow additional fields
 }
 
 /**
@@ -21,12 +35,23 @@ class EmailService {
    */
   async APICall(emailData: any, route: string, method:string = "POST"): Promise<any> {
     try {
+      // Create FormData for file uploads
+      const formData = new FormData();
+      
+      // Add all fields to FormData
+      Object.keys(emailData).forEach(key => {
+        if (emailData[key] !== undefined && emailData[key] !== null) {
+          if (key === 'resume' && emailData[key] instanceof File) {
+            formData.append('resume', emailData[key]);
+          } else {
+            formData.append(key, emailData[key].toString());
+          }
+        }
+      });
+
       const response = await fetch(Config.BACKEND_API_URL + route, {
         method: method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(emailData)
+        body: formData // Send as FormData instead of JSON
       });
 
       const result = await response.json();
