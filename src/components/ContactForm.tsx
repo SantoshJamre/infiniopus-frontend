@@ -69,7 +69,7 @@ const ContactForm = () => {
 
       // Choose one of the email service methods based on your preference
       // Option 1: Using EmailJS
-      const result = await emailService.APICall(emailData, '/contact', 'POST');
+      const result = await emailService.APICall(emailData, '/contact-us', 'POST');
       
       // Option 2: Using your backend API
       // const result = await emailService.sendEmailWithBackend(emailData);

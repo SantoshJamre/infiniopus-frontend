@@ -29,25 +29,110 @@ import emailService, { EmailData } from "@/services/emailService";
 
 // Form validation schema for internships and courses
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  phone: z.string().regex(/^\+91\s[6-9]\d{9}$/, { message: "Please enter a valid Indian phone number (e.g., +91 9876543210)" }),
-  program: z.string().min(1, { message: "Program is required" }),
-  
-  // Education fields
-  tenthPercentage: z.string().min(1, { message: "10th percentage/CGPA is required" }),
-  tenthSchool: z.string().min(1, { message: "10th school name is required" }),
-  twelfthPercentage: z.string().min(1, { message: "12th percentage/CGPA is required" }),
-  twelfthSchool: z.string().min(1, { message: "12th school name is required" }),
-  collegePercentage: z.string().min(1, { message: "College percentage/CGPA is required" }),
-  collegeName: z.string().min(1, { message: "College name is required" }),
-  courseType: z.string().min(1, { message: "Please select course type" }),
-  
-  experience: z.string().optional(),
-  motivation: z.string().min(20, { message: "Please tell us why you're interested (minimum 20 characters)" }),
-  goals: z.string().min(10, { message: "Please share your learning goals (minimum 10 characters)" }),
-  availability: z.string().min(1, { message: "Please specify your availability" }),
-  resume: z.any().optional(),
+  // Personal Information
+  name: z.string()
+    .trim()
+    .min(2, { message: "Name must be at least 2 characters long" })
+    .max(50, { message: "Name cannot exceed 50 characters" })
+    .regex(/^[a-zA-Z\s]+$/, { message: "Name can only contain letters and spaces" }),
+
+  email: z.string()
+    .trim()
+    .email({ message: "Please provide a valid email address" }),
+
+  phone: z.string()
+    .trim()
+    .regex(/^(\+91[\s-]?)?[6-9]\d{9}$/, { message: "Please provide a valid Indian phone number" }),
+
+  // Program Information
+  program: z.string()
+    .trim()
+    .min(1, { message: "Program selection is required" }),
+
+  courseType: z.string()
+    .trim()
+    .min(1, { message: "Course type is required" }),
+
+  // Educational Background
+  tenthPercentage: z.string()
+    .min(1, { message: "10th percentage is required" })
+    .refine((val) => {
+      const num = parseFloat(val);
+      return !isNaN(num) && num >= 0 && num <= 100;
+    }, { message: "10th percentage must be between 0 and 100" }),
+
+  tenthSchool: z.string()
+    .trim()
+    .min(2, { message: "School name must be at least 2 characters long" })
+    .max(100, { message: "School name cannot exceed 100 characters" }),
+
+  twelfthPercentage: z.string()
+    .min(1, { message: "12th percentage is required" })
+    .refine((val) => {
+      const num = parseFloat(val);
+      return !isNaN(num) && num >= 0 && num <= 100;
+    }, { message: "12th percentage must be between 0 and 100" }),
+
+  twelfthSchool: z.string()
+    .trim()
+    .min(2, { message: "School name must be at least 2 characters long" })
+    .max(100, { message: "School name cannot exceed 100 characters" }),
+
+  collegePercentage: z.string()
+    .min(1, { message: "College percentage is required" })
+    .refine((val) => {
+      const num = parseFloat(val);
+      return !isNaN(num) && num >= 0 && num <= 100;
+    }, { message: "College percentage must be between 0 and 100" }),
+
+  collegeName: z.string()
+    .trim()
+    .min(2, { message: "College name must be at least 2 characters long" })
+    .max(100, { message: "College name cannot exceed 100 characters" }),
+
+  // Experience and Motivation
+  experience: z.string()
+    .trim()
+    .min(10, { message: "Experience description must be at least 10 characters long" })
+    .max(500, { message: "Experience description cannot exceed 500 characters" }),
+
+  motivation: z.string()
+    .trim()
+    .min(20, { message: "Motivation must be at least 20 characters long" })
+    .max(1000, { message: "Motivation cannot exceed 1000 characters" }),
+
+  goals: z.string()
+    .trim()
+    .min(20, { message: "Goals description must be at least 20 characters long" })
+    .max(1000, { message: "Goals description cannot exceed 1000 characters" }),
+
+  // Availability
+  availability: z.string()
+    .trim()
+    .min(1, { message: "Availability is required" }),
+
+  // File validation
+  resume: z.any()
+    .optional()
+    .refine((file) => {
+      if (!file || (Array.isArray(file) && file.length === 0)) return true;
+      const actualFile = Array.isArray(file) ? file[0] : file;
+      if (!actualFile || !actualFile.size) return true;
+      
+      const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
+      return allowedTypes.includes(actualFile.type);
+    }, { message: "Resume must be a PDF, DOC, or DOCX file" })
+    .refine((file) => {
+      if (!file || (Array.isArray(file) && file.length === 0)) return true;
+      const actualFile = Array.isArray(file) ? file[0] : file;
+      if (!actualFile || !actualFile.size) return true;
+      
+      return actualFile.size <= 5 * 1024 * 1024; // 5MB limit
+    }, { message: "Resume file size cannot exceed 5MB" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;

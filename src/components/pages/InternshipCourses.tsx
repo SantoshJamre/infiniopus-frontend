@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Book, Briefcase, Users, Clock, MapPin, Check } from "lucide-react";
 import Layout from "../layout/Layout";
@@ -146,12 +146,14 @@ const features = [
 ];
 
 const InternshipCoursesPage = () => {
+  const [activeTab, setActiveTab] = useState<'internships' | 'courses'>('internships');
+
   return (
     <Layout>
       <div className="bg-background min-h-screen">
         {/* Hero Section */}
-        <section className="py-16 md:py-24 relative">
-          {/* Background with overlay */}
+        <section className="relative py-20 md:py-28">
+          {/* Original Background with Overlay */}
           <div
             className="absolute inset-0 z-0"
             style={{
@@ -160,204 +162,129 @@ const InternshipCoursesPage = () => {
               backgroundPosition: "center",
             }}
           >
-            <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+            <div className="absolute inset-0 bg-black/60"></div>
           </div>
-          <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto relative z-10">
-            <motion.div
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-4xl md:text-5xl font-bold mb-6 text-white"
+              >
+                {activeTab === 'internships' ? 'Internship Opportunities' : 'Professional Courses'}
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-xl text-gray-200 mb-8"
+              >
+                {activeTab === 'internships' 
+                  ? 'Gain real-world experience and build your professional network.'
+                  : 'Enhance your skills with our industry-relevant training programs.'}
+              </motion.p>
+              
+              {/* Tab Navigation */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="inline-flex bg-white/10 backdrop-blur-sm rounded-full p-1.5 mb-8"
+              >
+                <button
+                  onClick={() => setActiveTab('internships')}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    activeTab === 'internships' 
+                      ? 'bg-white text-blue-700 shadow-lg' 
+                      : 'text-white hover:bg-white/20'
+                  }`}
+                >
+                  <Briefcase className="inline-block w-4 h-4 mr-2 -mt-0.5" />
+                  Internships
+                </button>
+                <button
+                  onClick={() => setActiveTab('courses')}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    activeTab === 'courses' 
+                      ? 'bg-white text-blue-700 shadow-lg' 
+                      : 'text-white hover:bg-white/20'
+                  }`}
+                >
+                  <Book className="inline-block w-4 h-4 mr-2 -mt-0.5" />
+                  Courses
+                </button>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Programs Grid */}
+        <section className="py-16 px-4 bg-background">
+          <div className="container mx-auto">
+            <motion.div 
+              variants={staggerContainer}
               initial="hidden"
               animate="visible"
-              variants={fadeIn}
-              className="text-center mb-12"
-            >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-                Internships & Courses
-              </h1>
-              <p className="text-xl text-white/90 max-w-3xl mx-auto">
-                Accelerate your career with hands-on learning experiences and
-                expert-led courses in cutting-edge technologies
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Internships Section */}
-        <section className="py-16 bg-background">
-          <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={fadeIn}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Internship Opportunities
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Gain real-world experience and mentorship from industry experts
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {internships.map((internship) => (
-                <motion.div key={internship.id} variants={fadeIn}>
-                  <Card className="h-full hover:shadow-md transition-shadow duration-300">
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h3 className="text-xl font-semibold mb-1">
-                            {internship.title}
-                          </h3>
-                          <div className="flex items-center text-sm text-muted-foreground">
-                            <Briefcase className="h-4 w-4 mr-1" />
-                            <span>{internship.department}</span>
-                          </div>
-                        </div>
-                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                          {internship.type}
-                        </div>
+              {(activeTab === 'internships' ? internships : courses).map((item) => (
+                <motion.div
+                  key={item.id}
+                  variants={fadeIn}
+                  className="group relative bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative p-6 h-full flex flex-col">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                        {item.department}
+                      </span>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <MapPin className="w-4 h-4 mr-1" />
+                        {item.location}
                       </div>
-
-                      <div className="mb-4 space-y-2">
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          <span>{internship.location}</span>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                      {item.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 mb-4 flex-grow">
+                      {item.description}
+                    </p>
+                    
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-900 mb-2">Requirements:</h4>
+                      <ul className="space-y-1.5">
+                        {item.requirements.slice(0, 3).map((req, i) => (
+                          <li key={i} className="flex items-start">
+                            <Check className="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                            <span className="text-sm text-gray-600">{req}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="mt-auto pt-4 border-t border-gray-100">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Clock className="w-4 h-4 mr-1" />
+                          {item.type}
                         </div>
-                        <div className="flex items-start">
-                          <Clock className="h-4 w-4 mr-1 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-muted-foreground">
-                            Applications open until positions are filled
-                          </span>
-                        </div>
-                      </div>
-
-                      <p className="mb-4">{internship.description}</p>
-
-                      <div className="mb-6">
-                        <h4 className="font-medium mb-2">Requirements:</h4>
-                        <ul className="space-y-1">
-                          {internship.requirements.map((req, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start text-sm text-muted-foreground"
-                            >
-                              <Check className="h-4 w-4 mr-2 mt-1 text-green-500 flex-shrink-0" />
-                              <span>{req}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="flex justify-end">
                         <Button 
                           asChild
-                          className="w-full"
+                          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
                         >
-                          <Link to={`/apply?program=${encodeURIComponent(internship.title)}&type=internship`}>
+                          <Link to={`/apply?program=${encodeURIComponent(item.title)}&type=${activeTab.slice(0, -1)}`}>
                             Apply Now
+                            <ArrowRight className="w-4 h-4 ml-2" />
                           </Link>
                         </Button>
                       </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Courses Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={fadeIn}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Professional Courses
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Enhance your skills with our industry-relevant courses
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {courses.map((course) => (
-                <motion.div key={course.id} variants={fadeIn}>
-                  <Card className="h-full hover:shadow-md transition-shadow duration-300">
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h3 className="text-xl font-semibold mb-1">
-                            {course.title}
-                          </h3>
-                          <div className="flex items-center text-sm text-muted-foreground">
-                            <Book className="h-4 w-4 mr-1" />
-                            <span>{course.department}</span>
-                          </div>
-                        </div>
-                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                          {course.type}
-                        </div>
-                      </div>
-
-                      <div className="mb-4 space-y-2">
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          <span>{course.location}</span>
-                        </div>
-                        <div className="flex items-start">
-                          <Users className="h-4 w-4 mr-1 mt-1 flex-shrink-0" />
-                          <span className="text-sm text-muted-foreground">
-                            Limited seats available
-                          </span>
-                        </div>
-                      </div>
-
-                      <p className="mb-4">{course.description}</p>
-
-                      <div className="mb-6">
-                        <h4 className="font-medium mb-2">Requirements:</h4>
-                        <ul className="space-y-1">
-                          {course.requirements.map((req, index) => (
-                            <li
-                              key={index}
-                              className="flex items-start text-sm text-muted-foreground"
-                            >
-                              <Check className="h-4 w-4 mr-2 mt-1 text-green-500 flex-shrink-0" />
-                              <span>{req}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="flex justify-end">
-                        <Button 
-                          asChild
-                          className="w-full"
-                        >
-                          <Link to={`/apply?program=${encodeURIComponent(course.title)}&type=course`}>
-                            Apply Now
-                          </Link>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -365,43 +292,21 @@ const InternshipCoursesPage = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-primary text-primary-foreground">
-          <div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto text-center">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-              variants={fadeIn}
-              className="max-w-3xl mx-auto"
+        <section className="py-16 px-4 bg-primary text-primary-foreground">
+          <div className="container mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4">Can't find what you're looking for?</h2>
+            <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
+              Contact our team to discuss custom internship or training opportunities tailored to your needs.
+            </p>
+            <Button 
+              asChild 
+              variant="outline"
+              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-6 text-base"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to Take the Next Step?
-              </h2>
-              <p className="text-lg mb-8 text-primary-foreground/90">
-                Apply for our internships or enroll in our courses to accelerate your career in technology. Start your journey today!
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  asChild
-                >
-                  <Link to="/apply">
-                    Apply Now
-                  </Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
-                  asChild
-                >
-                  <Link to="/contact">
-                    Contact Our Team
-                  </Link>
-                </Button>
-              </div>
-            </motion.div>
+              <Link to="/contact">
+                Contact Our Team
+              </Link>
+            </Button>
           </div>
         </section>
       </div>

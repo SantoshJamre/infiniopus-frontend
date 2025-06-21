@@ -20,31 +20,145 @@ import emailService, { EmailData } from "@/services/emailService";
 
 // Form validation schema for job applications
 const jobFormSchema = z.object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    phone: z.string().regex(/^\+91\s[6-9]\d{9}$/, { message: "Please enter a valid Indian phone number (e.g., +91 9876543210)" }),
-    position: z.string().min(1, { message: "Position is required" }),
-    department: z.string().min(1, { message: "Department is required" }),
-    experience: z.string().regex(/^\d+(\.\d)?$/, { message: "Please enter valid years of experience (e.g., 2 or 2.5)" }),
+    // Personal Information
+    name: z.string()
+        .trim()
+        .min(2, { message: "Name must be at least 2 characters long" })
+        .max(50, { message: "Name cannot exceed 50 characters" })
+        .regex(/^[a-zA-Z\s]+$/, { message: "Name can only contain letters and spaces" }),
 
-    // Education fields
-    tenthPercentage: z.string().min(1, { message: "10th percentage/CGPA is required" }),
-    tenthSchool: z.string().min(1, { message: "10th school name is required" }),
-    twelfthPercentage: z.string().min(1, { message: "12th percentage/CGPA is required" }),
-    twelfthSchool: z.string().min(1, { message: "12th school name is required" }),
-    collegePercentage: z.string().min(1, { message: "College percentage/CGPA is required" }),
-    collegeName: z.string().min(1, { message: "College name is required" }),
-    courseType: z.string().min(1, { message: "Please select course type" }),
+    email: z.string()
+        .trim()
+        .email({ message: "Please provide a valid email address" }),
 
-    // Salary fields
-    currentSalary: z.string().optional(),
-    expectedSalary: z.string().min(1, { message: "Expected salary is required" }),
+    phone: z.string()
+        .trim()
+        .regex(/^(\+91[\s-]?)?[6-9]\d{9}$/, { message: "Please provide a valid Indian phone number" }),
 
-    noticePeriod: z.string().min(1, { message: "Please select notice period" }),
-    portfolioUrl: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal("")),
-    linkedinUrl: z.string().url({ message: "Please enter a valid LinkedIn URL" }).optional().or(z.literal("")),
-    coverLetter: z.string().optional(),
-    resume: z.any().refine((file) => file && file.size > 0, { message: "Resume/CV is required" }),
+    // Position Information
+    position: z.string()
+        .trim()
+        .min(1, { message: "Position is required" }),
+
+    department: z.string()
+        .trim()
+        .min(1, { message: "Department is required" }),
+
+    experience: z.string()
+        .regex(/^\d+(\.\d)?$/, { message: "Please enter valid years of experience (e.g., 2 or 2.5)" })
+        .refine((val) => {
+            const num = parseFloat(val);
+            return num >= 0 && num <= 50;
+        }, { message: "Experience must be between 0 and 50 years" }),
+
+    // Educational Background
+    tenthPercentage: z.string()
+        .min(1, { message: "10th percentage is required" })
+        .refine((val) => {
+            const num = parseFloat(val);
+            return !isNaN(num) && num >= 0 && num <= 100;
+        }, { message: "10th percentage must be between 0 and 100" }),
+
+    tenthSchool: z.string()
+        .trim()
+        .min(2, { message: "School name must be at least 2 characters long" })
+        .max(100, { message: "School name cannot exceed 100 characters" }),
+
+    twelfthPercentage: z.string()
+        .min(1, { message: "12th percentage is required" })
+        .refine((val) => {
+            const num = parseFloat(val);
+            return !isNaN(num) && num >= 0 && num <= 100;
+        }, { message: "12th percentage must be between 0 and 100" }),
+
+    twelfthSchool: z.string()
+        .trim()
+        .min(2, { message: "School name must be at least 2 characters long" })
+        .max(100, { message: "School name cannot exceed 100 characters" }),
+
+    collegePercentage: z.string()
+        .min(1, { message: "College percentage is required" })
+        .refine((val) => {
+            const num = parseFloat(val);
+            return !isNaN(num) && num >= 0 && num <= 100;
+        }, { message: "College percentage must be between 0 and 100" }),
+
+    collegeName: z.string()
+        .trim()
+        .min(2, { message: "College name must be at least 2 characters long" })
+        .max(100, { message: "College name cannot exceed 100 characters" }),
+
+    courseType: z.string()
+        .min(1, { message: "Please select course type" }),
+
+    // Salary Information
+    currentSalary: z.string()
+        .optional()
+        .refine((val) => {
+            if (!val || val.trim() === "") return true;
+            const num = parseFloat(val);
+            return !isNaN(num) && num >= 0;
+        }, { message: "Current salary must be a valid positive number" }),
+
+    expectedSalary: z.string()
+        .min(1, { message: "Expected salary is required" })
+        .refine((val) => {
+            const num = parseFloat(val);
+            return !isNaN(num) && num > 0;
+        }, { message: "Expected salary must be a valid positive number" }),
+
+    // Availability
+    noticePeriod: z.string()
+        .min(1, { message: "Please select notice period" }),
+
+    // Additional Information
+    portfolioUrl: z.string()
+        .optional()
+        .refine((val) => {
+            if (!val || val.trim() === "") return true;
+            try {
+                new URL(val);
+                return true;
+            } catch {
+                return false;
+            }
+        }, { message: "Please enter a valid portfolio URL" }),
+
+    linkedinUrl: z.string()
+        .optional()
+        .refine((val) => {
+            if (!val || val.trim() === "") return true;
+            try {
+                new URL(val);
+                return val.includes('linkedin.com');
+            } catch {
+                return false;
+            }
+        }, { message: "Please enter a valid LinkedIn URL" }),
+
+    coverLetter: z.string()
+        .optional()
+        .refine((val) => {
+            if (!val || val.trim() === "") return true;
+            return val.trim().length <= 2000;
+        }, { message: "Cover letter cannot exceed 2000 characters" }),
+
+    // File validation
+    resume: z.any()
+        .refine((file) => file && file.size > 0, { message: "Resume/CV is required" })
+        .refine((file) => {
+            if (!file) return false;
+            const allowedTypes = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
+            return allowedTypes.includes(file.type);
+        }, { message: "Resume must be a PDF, DOC, or DOCX file" })
+        .refine((file) => {
+            if (!file) return false;
+            return file.size <= 5 * 1024 * 1024; // 5MB limit
+        }, { message: "Resume file size cannot exceed 5MB" }),
 });
 
 type JobFormData = z.infer<typeof jobFormSchema>;
