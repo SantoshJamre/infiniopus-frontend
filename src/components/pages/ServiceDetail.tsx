@@ -248,8 +248,8 @@ const ServiceDetail = () => {
                         <span className="mr-2">📞</span> Have questions?
                       </h4>
                       <p className="text-sm text-slate-600">
-                        Call us at <a href="tel:+1234567890" className="text-indigo-600 hover:underline">+1 (234) 567-890</a> or 
-                        email <a href="mailto:info@example.com" className="text-indigo-600 hover:underline">info@example.com</a>
+                        Call us at <a href="tel:+1234567890" className="text-indigo-600 hover:underline">+91-8109878096</a> or 
+                        email <a href="mailto:info@example.com" className="text-indigo-600 hover:underline">info@infiniopus.com</a>
                       </p>
                     </div>
                   </CardContent>
@@ -329,7 +329,7 @@ const ServiceDetail = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-white text-white hover:bg-white/10 px-8 py-6 text-base font-medium md:py-6 md:px-10 md:text-lg"
+                className="border-white text-indigo-700  hover:bg-white/10 px-8 py-6 text-base font-medium md:py-6 md:px-10 md:text-lg"
                 asChild
               >
                 <Link to="/services">

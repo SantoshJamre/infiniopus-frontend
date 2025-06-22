@@ -167,7 +167,7 @@ const Layout = ({
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2, ease: "easeInOut" }}
-                className="md:hidden overflow-hidden"
+                className="md:hidden overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg rounded-lg mt-2"
               >
                 <nav className="flex flex-col space-y-1 py-2">
                   {navLinks.map((link) => {

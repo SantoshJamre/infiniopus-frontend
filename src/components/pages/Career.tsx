@@ -5,19 +5,19 @@ import Layout from "../layout/Layout";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
 import { Separator } from "../ui/separator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 // Animation variants
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { 
-      duration: 0.6, 
-      ease: "easeOut" 
-    } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
   },
 };
 
@@ -169,6 +169,32 @@ const benefits = [
 ];
 
 const Career = () => {
+  const navigate = useNavigate();
+
+  // Function to handle smooth scrolling to a section
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Function to handle scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Scroll to section when component mounts with hash in URL
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const sectionId = hash.replace('#', '');
+      setTimeout(() => {
+        scrollToSection(sectionId);
+      }, 100);
+    }
+  }, []);
+
   return (
     <Layout>
       <div className="bg-background min-h-screen">
@@ -177,13 +203,13 @@ const Career = () => {
           {/* Background with overlay */}
           <div className="absolute inset-0 z-0">
             <img
-            
+
               src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&q=80"
               alt="Diverse team collaborating in a modern office"
               className="w-full h-full object-cover opacity-20"
             />
           </div>
-          
+
           {/* Animated background elements */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute -top-20 -left-20 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl animate-pulse" />
@@ -203,7 +229,7 @@ const Career = () => {
                 We're Hiring!
               </span>
             </motion.div>
-            
+
             <motion.h1
               className="mb-6 max-w-4xl text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100"
               initial={{ opacity: 0, y: 20 }}
@@ -219,7 +245,7 @@ const Career = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              Join our team of innovators and help shape the future of technology. 
+              Join our team of innovators and help shape the future of technology.
               Work on exciting projects with talented professionals in a collaborative environment.
             </motion.p>
 
@@ -229,18 +255,20 @@ const Career = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button 
-                asChild 
-                size="lg" 
+              <Button
+                asChild
+                size="lg"
                 className="bg-white text-slate-900 hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                onClick={() => scrollToSection('openings')}
               >
-                <Link to="#openings" onClick={scrollToTop}>
+                <Link to="#openings">
                   View Open Positions <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
+              <Button
+                variant="outline"
+                onClick={() => navigate('/about')}
+                size="lg"
                 className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:scale-105 transition-all duration-300"
               >
                 Learn About Our Culture
@@ -249,7 +277,7 @@ const Career = () => {
           </div>
 
           {/* Floating elements */}
-          <motion.div 
+          <motion.div
             className="absolute bottom-20 left-1/4 w-4 h-4 rounded-full bg-blue-400/30"
             animate={{
               y: [0, -20, 0],
@@ -261,7 +289,7 @@ const Career = () => {
               ease: "easeInOut",
             }}
           />
-          <motion.div 
+          <motion.div
             className="absolute top-1/3 right-1/4 w-3 h-3 rounded-full bg-purple-400/30"
             animate={{
               y: [-10, 10, -10],
@@ -316,10 +344,10 @@ const Career = () => {
               </div>
               <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-indigo-100/50 dark:bg-indigo-900/20 rounded-full blur-3xl z-0"></div>
               <div className="absolute -top-6 -right-6 w-40 h-40 bg-blue-100/50 dark:bg-blue-900/20 rounded-full blur-3xl z-0"></div>
-              
+
               {/* Stats */}
               <div className="grid grid-cols-2 gap-4 mt-8">
-                <motion.div 
+                <motion.div
                   className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-slate-700/50"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -329,7 +357,7 @@ const Career = () => {
                   <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">50+</div>
                   <div className="text-sm text-muted-foreground mt-1">Team Members</div>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-slate-700/50"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -357,7 +385,7 @@ const Career = () => {
               <span className="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span>
               Benefits & Perks
             </motion.div>
-            <motion.h2 
+            <motion.h2
               className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -366,7 +394,7 @@ const Career = () => {
             >
               We Take Care of Our <span className="text-indigo-600 dark:text-indigo-400">Team</span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-lg text-muted-foreground"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -385,8 +413,8 @@ const Career = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {benefits.map((benefit, index) => (
-              <motion.div 
-                key={index} 
+              <motion.div
+                key={index}
                 variants={fadeInUp}
                 custom={index}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
@@ -435,7 +463,7 @@ const Career = () => {
               <span className="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span>
               Join Our Team
             </motion.div>
-            <motion.h2 
+            <motion.h2
               className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -444,7 +472,7 @@ const Career = () => {
             >
               Current <span className="text-indigo-600 dark:text-indigo-400">Open Positions</span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-lg text-muted-foreground"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -463,8 +491,8 @@ const Career = () => {
             className="space-y-6"
           >
             {jobOpenings.map((job) => (
-              <motion.div 
-                key={job.id} 
+              <motion.div
+                key={job.id}
                 variants={fadeInUp}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 className="group"
@@ -499,13 +527,13 @@ const Career = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         <p className="text-muted-foreground mb-4">{job.description}</p>
-                        
+
                         <div className="flex flex-wrap gap-2 mt-4">
                           {job.skills.map((skill, i) => (
-                            <span 
-                              key={i} 
+                            <span
+                              key={i}
                               className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300"
                             >
                               {skill}
@@ -513,27 +541,26 @@ const Career = () => {
                           ))}
                         </div>
                       </div>
-                      
-                      <Button 
-                        asChild 
-                        size="lg" 
-                        className="group/button mt-4 md:mt-0"
-                        variant="outline"
-                      >
-                        <Link 
-                          to={`/apply-job?position=${encodeURIComponent(job.title)}&department=${encodeURIComponent(job.department)}`}
-                          onClick={scrollToTop}
-                          className="flex items-center group-hover/button:text-indigo-600 dark:group-hover/button:text-indigo-400"
+
+                      <div className="flex flex-col items-end">
+                        <Button
+                          disabled
+                          size="lg"
+                          className="group/button mt-4 md:mt-0 opacity-50 cursor-not-allowed"
+                          variant="outline"
                         >
-                          Apply Now 
-                          <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
-                        </Link>
-                      </Button>
+                          <span className="flex items-center">
+                            Apply Now
+                            <ChevronRight className="ml-2 h-4 w-4" />
+                          </span>
+                        </Button>
+                        <p className="text-red-500 text-sm mt-2">This opening is no longer available</p>
+                      </div>
                     </div>
-                    
+
                     <div className="mt-6 pt-6 border-t border-gray-100 dark:border-slate-700/50">
                       <h4 className="font-medium mb-3 flex items-center text-slate-800 dark:text-slate-200">
-                        <Users className="h-5 w-5 mr-2 text-indigo-500" /> 
+                        <Users className="h-5 w-5 mr-2 text-indigo-500" />
                         Key Requirements
                       </h4>
                       <ul className="space-y-2">
@@ -550,8 +577,8 @@ const Career = () => {
               </motion.div>
             ))}
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="mt-16 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -561,8 +588,8 @@ const Career = () => {
             <p className="text-muted-foreground mb-6">
               Don't see a role that matches your skills? We're always looking for talented individuals.
             </p>
-            <Button 
-              asChild 
+            <Button
+              asChild
               variant="outline"
               size="lg"
               className="group/button"
@@ -589,8 +616,8 @@ const Career = () => {
                 <span className="w-2 h-2 rounded-full bg-white mr-2"></span>
                 Ready to Join Us?
               </motion.div>
-              
-              <motion.h2 
+
+              <motion.h2
                 className="text-3xl md:text-4xl font-bold mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -599,36 +626,36 @@ const Career = () => {
               >
                 Start Your Journey at Infiniopus
               </motion.h2>
-              
-              <motion.p 
+
+              <motion.p
                 className="text-lg text-white/90 mb-8 max-w-2xl mx-auto"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                We're always looking for passionate individuals to join our growing team. 
+                We're always looking for passionate individuals to join our growing team.
                 If you don't see the perfect role, we'd still love to hear from you.
               </motion.p>
-              
-              <motion.div 
+
+              <motion.div
                 className="flex flex-col sm:flex-row gap-4 justify-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 viewport={{ once: true }}
               >
-                <Button 
-                  asChild 
-                  size="lg" 
+                <Button
+                  asChild
+                  size="lg"
                   className="bg-white text-indigo-700 hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   <Link to="#openings" onClick={scrollToTop}>
-                    View All Openings 
+                    View All Openings
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button 
+                <Button
                   asChild
                   size="lg"
                   variant="outline"
@@ -640,7 +667,7 @@ const Career = () => {
                 </Button>
               </motion.div>
             </div>
-            
+
             {/* Decorative elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
               <div className="absolute -top-20 -left-20 w-64 h-64 bg-white/10 rounded-full filter blur-3xl"></div>

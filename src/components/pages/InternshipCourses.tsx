@@ -37,37 +37,40 @@ const internships = [
       "Strong problem-solving abilities",
       "Ability to work in a team environment",
     ],
+    skills: ["JavaScript", "React", "Node.js", "Express", "MongoDB", "Git"],
   },
-  {
-    id: 2,
-    title: "Data Science",
-    department: "Analytics",
-    location: "Remote",
-    type: "6 months",
-    description: "Work with our expert team to analyze complex datasets and extract meaningful insights using advanced analytics.",
-    requirements: [
-      "Knowledge of Python or R programming",
-      "Understanding of statistical concepts",
-      "Experience with data manipulation libraries",
-      "Familiarity with machine learning concepts",
-      "Strong analytical thinking skills",
-    ],
-  },
-  {
-    id: 3,
-    title: "UI/UX Design",
-    department: "Design",
-    location: "Tech City (On-site)",
-    type: "4 months",
-    description: "Learn the principles of user-centered design and create engaging interfaces for web and mobile applications.",
-    requirements: [
-      "Basic understanding of design principles",
-      "Familiarity with design tools like Figma or Sketch",
-      "Knowledge of UI/UX concepts",
-      "Creative thinking and problem-solving skills",
-      "Attention to detail",
-    ],
-  },
+  // {
+  //   id: 2,
+  //   title: "Data Science",
+  //   department: "Analytics",
+  //   location: "Remote",
+  //   type: "6 months",
+  //   description: "Work with our expert team to analyze complex datasets and extract meaningful insights using advanced analytics.",
+  //   requirements: [
+  //     "Knowledge of Python or R programming",
+  //     "Understanding of statistical concepts",
+  //     "Experience with data manipulation libraries",
+  //     "Familiarity with machine learning concepts",
+  //     "Strong analytical thinking skills",
+  //   ],
+  //   skills: ["Python", "Pandas", "NumPy", "Scikit-learn", "TensorFlow", "Data Visualization"],
+  // },
+  // {
+  //   id: 3,
+  //   title: "UI/UX Design",
+  //   department: "Design",
+  //   location: "Tech City (On-site)",
+  //   type: "4 months",
+  //   description: "Learn the principles of user-centered design and create engaging interfaces for web and mobile applications.",
+  //   requirements: [
+  //     "Basic understanding of design principles",
+  //     "Familiarity with design tools like Figma or Sketch",
+  //     "Knowledge of UI/UX concepts",
+  //     "Creative thinking and problem-solving skills",
+  //     "Attention to detail",
+  //   ],
+  //   skills: ["Figma", "Sketch", "Adobe XD", "User Research", "Wireframing", "Prototyping"],
+  // },
 ];
 
 export { internships };
@@ -87,37 +90,40 @@ const courses = [
       "Laptop with internet connection",
       "Dedication to learning new technologies",
     ],
+    skills: ["HTML5", "CSS3", "JavaScript", "React", "Node.js", "Express", "MongoDB", "Git"],
   },
-  {
-    id: 2,
-    title: "Machine Learning Fundamentals",
-    department: "Data Science",
-    location: "Online",
-    type: "10 weeks",
-    description: "Learn the core concepts and algorithms of machine learning with practical applications.",
-    requirements: [
-      "Basic Python programming skills",
-      "Understanding of linear algebra and statistics",
-      "Experience with data analysis tools",
-      "Willingness to work on projects",
-      "Strong mathematical aptitude",
-    ],
-  },
-  {
-    id: 3,
-    title: "Cloud Computing",
-    department: "Infrastructure",
-    location: "Hybrid",
-    type: "8 weeks",
-    description: "Master cloud technologies and services to design, deploy, and manage scalable applications.",
-    requirements: [
-      "Basic understanding of networking concepts",
-      "Familiarity with operating systems",
-      "Command-line interface experience",
-      "Interest in cloud technologies",
-      "Problem-solving abilities",
-    ],
-  },
+  // {
+  //   id: 2,
+  //   title: "Machine Learning Fundamentals",
+  //   department: "Data Science",
+  //   location: "Online",
+  //   type: "10 weeks",
+  //   description: "Learn the core concepts and algorithms of machine learning with practical applications.",
+  //   requirements: [
+  //     "Basic Python programming skills",
+  //     "Understanding of linear algebra and statistics",
+  //     "Experience with data analysis tools",
+  //     "Willingness to work on projects",
+  //     "Strong mathematical aptitude",
+  //   ],
+  //   skills: ["Python", "NumPy", "Pandas", "Matplotlib", "Scikit-learn", "TensorFlow", "Data Preprocessing", "Model Evaluation"],
+  // },
+  // {
+  //   id: 3,
+  //   title: "Cloud Computing",
+  //   department: "Infrastructure",
+  //   location: "Hybrid",
+  //   type: "8 weeks",
+  //   description: "Master cloud technologies and services to design, deploy, and manage scalable applications.",
+  //   requirements: [
+  //     "Basic understanding of networking concepts",
+  //     "Familiarity with operating systems",
+  //     "Command-line interface experience",
+  //     "Interest in cloud technologies",
+  //     "Problem-solving abilities",
+  //   ],
+  //   skills: ["AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "CI/CD", "Infrastructure as Code", "Serverless"],
+  // },
 ];
 
 export { courses };
@@ -254,6 +260,18 @@ const InternshipCoursesPage = () => {
                     <p className="text-gray-600 mb-4 flex-grow">
                       {item.description}
                     </p>
+                    
+                    {/* Skills Section */}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-900 mb-2">Skills You'll Learn:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {item.skills?.map((skill, index) => (
+                          <span key={index} className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                     
                     <div className="mb-4">
                       <h4 className="text-sm font-medium text-gray-900 mb-2">Requirements:</h4>

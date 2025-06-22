@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Code, Smartphone, Monitor, Globe } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../layout/Layout";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -46,72 +46,91 @@ const staggerContainer = {
   },
 };
 
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-};
-
-// Enhanced portfolio projects with icons
-const portfolioProjects = [
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    category: "Web Development",
-    description: "A modern e-commerce platform with advanced product filtering, user authentication, and payment processing.",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&q=80",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
-    icon: <Monitor className="h-5 w-5" />,
-  },
-  {
-    id: 2,
-    title: "Health & Fitness App",
-    category: "Mobile App",
-    description: "A comprehensive fitness tracking application with workout plans, nutrition tracking, and progress visualization.",
-    image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?w=1200&q=80",
-    tags: ["React Native", "Firebase", "Redux", "HealthKit"],
-    icon: <Smartphone className="h-5 w-5" />,
-  },
-  {
-    id: 3,
-    title: "Financial Dashboard",
-    category: "Web Application",
-    description: "An interactive financial dashboard for tracking investments, expenses, and financial goals with data visualization.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
-    tags: ["Vue.js", "D3.js", "Express", "PostgreSQL"],
-    icon: <Monitor className="h-5 w-5" />,
-  },
-  {
-    id: 4,
-    title: "Real Estate Platform",
-    category: "Web Development",
-    description: "A property listing and management platform with virtual tours, appointment scheduling, and mortgage calculator.",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80",
-    tags: ["Angular", "Node.js", "MongoDB", "AWS"],
-    icon: <Globe className="h-5 w-5" />,
-  },
-  {
-    id: 5,
-    title: "Travel Companion App",
-    category: "Mobile App",
-    description: "A travel planning application with itinerary management, local recommendations, and offline maps.",
-    image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80",
-    tags: ["Flutter", "Firebase", "Google Maps API", "GraphQL"],
-    icon: <Smartphone className="h-5 w-5" />,
-  },
-  {
-    id: 6,
-    title: "Learning Management System",
-    category: "Web Application",
-    description: "An educational platform with course creation, student progress tracking, and interactive learning materials.",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=1200&q=80",
-    tags: ["React", "Django", "PostgreSQL", "AWS"],
-    icon: <Monitor className="h-5 w-5" />,
-  },
-];
-
 const Portfolio = () => {
+  const navigate = useNavigate();
+
+  // Function to handle smooth scrolling to a section
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Scroll to section when component mounts with hash in URL
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const sectionId = hash.replace('#', '');
+      setTimeout(() => {
+        scrollToSection(sectionId);
+      }, 100);
+    }
+  }, []);
+
+  // Function to handle scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Enhanced portfolio projects with icons
+  const portfolioProjects = [
+    {
+      id: 1,
+      title: "E-Commerce Platform",
+      category: "Web Development",
+      description: "A modern e-commerce platform with advanced product filtering, user authentication, and payment processing.",
+      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&q=80",
+      tags: ["React", "Node.js", "MongoDB", "Stripe"],
+      icon: <Monitor className="h-5 w-5" />,
+    },
+    {
+      id: 2,
+      title: "Health & Fitness App",
+      category: "Mobile App",
+      description: "A comprehensive fitness tracking application with workout plans, nutrition tracking, and progress visualization.",
+      image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?w=1200&q=80",
+      tags: ["React Native", "Firebase", "Redux", "HealthKit"],
+      icon: <Smartphone className="h-5 w-5" />,
+    },
+    {
+      id: 3,
+      title: "Financial Dashboard",
+      category: "Web Application",
+      description: "An interactive financial dashboard for tracking investments, expenses, and financial goals with data visualization.",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
+      tags: ["Vue.js", "D3.js", "Express", "PostgreSQL"],
+      icon: <Monitor className="h-5 w-5" />,
+    },
+    {
+      id: 4,
+      title: "Real Estate Platform",
+      category: "Web Development",
+      description: "A property listing and management platform with virtual tours, appointment scheduling, and mortgage calculator.",
+      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80",
+      tags: ["Angular", "Node.js", "MongoDB", "AWS"],
+      icon: <Globe className="h-5 w-5" />,
+    },
+    {
+      id: 5,
+      title: "Travel Companion App",
+      category: "Mobile App",
+      description: "A travel planning application with itinerary management, local recommendations, and offline maps.",
+      image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80",
+      tags: ["Flutter", "Firebase", "Google Maps API", "GraphQL"],
+      icon: <Smartphone className="h-5 w-5" />,
+    },
+    {
+      id: 6,
+      title: "Learning Management System",
+      category: "Web Application",
+      description: "An educational platform with course creation, student progress tracking, and interactive learning materials.",
+      image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=1200&q=80",
+      tags: ["React", "Django", "PostgreSQL", "AWS"],
+      icon: <Monitor className="h-5 w-5" />,
+    },
+  ];
+
   return (
     <Layout>
       <div className="bg-background min-h-screen">
@@ -174,14 +193,16 @@ const Portfolio = () => {
                 asChild 
                 size="lg" 
                 className="bg-white text-slate-900 hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                onClick={() => scrollToSection('projects')}
               >
-                <Link to="#projects" onClick={scrollToTop}>
+                <Link to="#projects">
                   View Projects <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
+                onClick={() => navigate('/contact')}
                 className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:scale-105 transition-all duration-300"
               >
                 Contact Us
