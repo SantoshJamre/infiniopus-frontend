@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronRight, ExternalLink, Zap, Target, Code, Rocket, Quote, ShoppingCart, Cloud, Smartphone, ChevronDown, Linkedin, Mail, MapPin, Phone, MessageCircle } from "lucide-react";
+import { ArrowRight, ChevronRight, ExternalLink, Zap, Target, Code, Rocket, Quote, ShoppingCart, Cloud, Smartphone, ChevronDown, Linkedin, Mail, MapPin, Phone, MessageCircle, User, Users, Store } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Button } from "./ui/button";
@@ -10,6 +10,7 @@ import HeroSection from "./sections/HeroSection";
 import ContactForm from "./ContactForm";
 import Layout from "./layout/Layout";
 import { services } from "./../data/services";
+import Growth from "./pages/Growth";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -446,6 +447,9 @@ const Home = () => {
           </div>
         </section>
 
+        {/* Growth Showcase Section */}
+        <Growth />
+
         {/* Mission Statement */}
         <section className="relative py-32 px-4 md:px-8 lg:px-16 overflow-hidden">
           {/* Animated background gradient */}
@@ -492,7 +496,7 @@ const Home = () => {
               variants={staggerContainer}
               className="text-center max-w-4xl mx-auto"
             >
-                <div className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-medium py-1 px-3 rounded-full mb-4">
+              <div className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-medium py-1 px-3 rounded-full mb-4">
                 About Us
               </div>
 
